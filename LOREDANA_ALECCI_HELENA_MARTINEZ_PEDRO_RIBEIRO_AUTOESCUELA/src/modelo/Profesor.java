@@ -58,6 +58,15 @@ public class Profesor extends Persona {
 	public void necesidad_arreglo() {
 		
 	}
+	
+	public String mostrarAlumnos() {
+		String cadena = "\n";
+		
+		for (Alumnos a: this.lista_alumnos_prac) {
+			cadena += a.toString() + "\n";
+		}
+		return cadena;
+	}
 
 	@Override
 	public String toString() {

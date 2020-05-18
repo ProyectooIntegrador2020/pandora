@@ -29,7 +29,10 @@ public class Coches {
 	 */
 	public Coches(Coches c) {
 		this.matricula = c.getMatricula();
-		this.lista_arreglos.addAll(c.getLista_arreglos());
+		if (c.getLista_arreglos().size() > 0)
+			this.lista_arreglos.addAll(c.getLista_arreglos());
+		else
+			this.lista_arreglos = new HashSet<Arreglo>();
 		this.litros_gasolina = c.getLitros_gasolina();
 		this.precio_gasolina = c.getPrecio_gasolina();
 	}

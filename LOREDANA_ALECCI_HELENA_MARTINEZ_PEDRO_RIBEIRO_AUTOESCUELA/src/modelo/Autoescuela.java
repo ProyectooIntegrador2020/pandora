@@ -88,7 +88,7 @@ public class Autoescuela implements tipos_matricula_examen {
 		alumnos.addAll(filtrarAlumnos(tipo));
 		
 		//Seleccionamos una cantidad de alumnos que van a aprobar.
-		int numAprobados = generator.nextInt(alumnos.size()/2);
+		int numAprobados = generator.nextInt(alumnos.size());
 		
 		//Tantas veces como la cantidad de alumnos que van a aprobar, se genera un numero aleatorio que no sobrepase la
 		// cantidad de alumnos elegibles. Ese numero indica la posición del alumno en la lista, se coge ese alumno y se
@@ -97,6 +97,33 @@ public class Autoescuela implements tipos_matricula_examen {
 			alumnosAprobados.add(alumnos.get(generator.nextInt(alumnos.size())));
 		
 		return alumnosAprobados;
+	}
+	
+	public String mostrarAlumnos() {
+		String cadena = "\n";
+		
+		for (Alumnos a: this.lista_alumnos) {
+			cadena += a.toString() + "\n";
+		}
+		return cadena;
+	}
+	
+	public String mostrarCoches() {
+		String cadena = "\n";
+		
+		for (Coches c: this.lista_vehiculos) {
+			cadena += c.toString() + "\n";
+		}
+		return cadena;
+	}
+	
+	public String mostrarProfes() {
+		String cadena = "\n";
+		
+		for (Profesor p: this.lista_profesores) {
+			cadena += p.toString() + "\n";
+		}
+		return cadena;
 	}
 
 	public HashSet<Profesor> getLista_profesores() {
@@ -133,7 +160,7 @@ public class Autoescuela implements tipos_matricula_examen {
 
 	@Override
 	public String toString() {
-		return "Autoescuela [beneficios=" + beneficios + "]";
+		return "Autoescuela [beneficios=" + beneficios + ", " + mostrarAlumnos() + mostrarProfes() + mostrarCoches();
 	}
 	
 }
