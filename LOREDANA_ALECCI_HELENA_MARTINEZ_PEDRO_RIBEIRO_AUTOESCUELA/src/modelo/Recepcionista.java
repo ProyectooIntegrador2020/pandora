@@ -11,21 +11,14 @@ import java.util.LinkedHashSet;
  * @author Loredana Alecci
  * @author Pedro Ribeiro
  */
-public class Recepcionista extends Persona implements tipos_matricula_examen {
-
-	private LinkedHashSet<Alumnos> lista_alum_espera;
-	
-	public Recepcionista(String dni, int edad, String nombre, int num) {
-		super(dni, edad, nombre, num);
-		// TODO Auto-generated constructor stub
-		lista_alum_espera = new LinkedHashSet<Alumnos>();
-	}
+public class Recepcionista implements tipos_matricula_examen {
 	
 	/**
 	 * Método que da de alta a una persona (puede ser alumno, trabajador o recepcionista).
 	 * @param persona Persona que se va a dar de alta. Es un objeto de tipo Persona.
+	 * @param Autoescuela Autoescuela donde se va a dar de alta.
 	 */
-	public void alta(Persona p, Autoescuela a) {
+	public static void alta(Persona p, Autoescuela a) {
 		//Chequea si la persona a dar de alta es profesor o alumno y lo añade a los HashList de la autoescuela.
 		if (p instanceof Alumnos)
 			a.getLista_alumnos().add((Alumnos)p);
@@ -36,18 +29,19 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	/**
 	 * Método que da de alta un coche en la autoescuela.
 	 * @param coche Coche que se va a dar de alta. Es un objeto de tipo Coche.
+	 * @param Autoescuela Autoescuela donde se va a dar de alta.
 	 */
-	public void alta(Coches c, Autoescuela a) {
+	public static void alta(Coches c, Autoescuela a) {
 		//Chequea si la persona a dar de alta es profesor o alumno y lo añade a los HashList de la autoescuela.
 		a.getLista_vehiculos().add(c);
 	}
 	
 	/**
 	 * Método que cobra a todos los alumnos pendientes de cobro.
-	 * @param array_alumnos Lista de alumnos previamente filtrados que están pendientes de cobro.
+	 * @param Autoescuela La autoescuela que contiene los alumnos.
 	 * @return true si ha cobrado satisfactoriamente, false si ha ocurrido algún problema.
 	 */
-	public float cobros(Autoescuela auto) {
+	public static float cobros(Autoescuela auto) {
 		ArrayList<Alumnos> sinPagar = new ArrayList<Alumnos>();
 		
 		float cobros = 0;
@@ -80,9 +74,11 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	
 	/**
 	 * Método que calcula los gastos totales y se los resta al dinero recaudado de los cobros.
+	 * @param cobros Dinero cobrado previamente de los alumnos de la autoescuela.
+	 * @param Autoescuela Autoescuela que se está gestionando.
 	 * @return beneficio de la autoescuela.
 	 */
-	public float pagos_arreglos(float cobros, Autoescuela a) {
+	public static float pagos_arreglos(float cobros, Autoescuela a) {
 		float pagos = 0;
 		
 		//Recorro la lista de coches que tiene la autoescuela.
@@ -101,14 +97,15 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	}
 	
 	/**
-	 * Método que asigna un alumno previamente en lista de espera a un profesor.
+	 * Método que asigna alumnos previamente en lista de espera a un profesor.
+	 * @param Autoescuela Autoescuela donde están las listas de profesores.
 	 * @return true si se ha podido asignar, false si no se ha podido asignar.
 	 */
-	public boolean asignar_alumno_profesor(Autoescuela a) {
+	public static boolean asignar_alumno_profesor(Autoescuela a) {
 		//Guarda el tamaño de la lista de espera al inicio de la operacion.
-		int tamanioIni = lista_alum_espera.size();
+		int tamanioIni = a.getLista_alum_espera().size();
 		//Crea un iterador para recorrer la lista de espera.
-		Iterator<Alumnos> it = lista_alum_espera.iterator();
+		Iterator<Alumnos> it = a.getLista_alum_espera().iterator();
 		
 		//Se recorre la lista de profesores de la autoescuela
 		for (Profesor p: a.getLista_profesores()) {
@@ -122,13 +119,13 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 			}
 			//Si la lista de espera se ha quedado vacía, se sale del bucle para que no siga comprobando el hueco del resto
 			// de profesores.
-			if (lista_alum_espera.size() == 0)
+			if (a.getLista_alum_espera().size() == 0)
 				break;
 		}
 		
 		//Si el tamaño de la lista de espera no ha cambiado significa que no se ha podido asignar ningun alumno y 
 		// devuelve false. Si sí, devuelve true.
-		if (tamanioIni == lista_alum_espera.size())
+		if (tamanioIni == a.getLista_alum_espera().size())
 			return false;
 		else
 			return true;
@@ -138,7 +135,7 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	 * Metodo que recibe los alumnos aprobados del teorico y les cambia el tipo de examen pendiente a practico.
 	 * @param auto Autoescuela.
 	 */
-	public void gestionarAprobadosTeoricos(Autoescuela auto) {
+	public static void gestionarAprobadosTeoricos(Autoescuela auto) {
 		//ArrayList que aloja la lista de alumnos aprobados.
 		ArrayList<Alumnos> aprobados = new ArrayList<Alumnos>();
 
@@ -149,7 +146,8 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 		// ahora, y se le añade a la lista de espera..
 		for (Alumnos a: aprobados) {
 			a.setExamen(tipoExamen.practico);
-			lista_alum_espera.add(a);
+			//lista_alum_espera.add(a);
+			auto.getLista_alum_espera().add(a);
 		}
 		//Actualizamos los datos en la lista general de la autoescuela
 		actualizarAlumnosAutoescuelaExamen(aprobados, auto);
@@ -160,7 +158,7 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	 * @param alumnosList Lista de alumnos aprobados.
 	 * @param auto Autoescuela que se va a actualizar.
 	 */
-	public void actualizarAlumnosAutoescuelaExamen(ArrayList<Alumnos> alumnosList, Autoescuela auto) {
+	public static void actualizarAlumnosAutoescuelaExamen(ArrayList<Alumnos> alumnosList, Autoescuela auto) {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
 		Iterator<Alumnos> it = auto.getLista_alumnos().iterator();
 		
@@ -192,7 +190,12 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 		}
 	}
 	
-	public void actualizarAlumnosAutoescuelaPago(ArrayList<Alumnos> alumnosList, Autoescuela auto) {
+	/**
+	 * Método que actualiza el estado de pago de los alumnos en la lista general de la autoescuela.
+	 * @param alumnosList Lista de alumnos que han sido cobrados.
+	 * @param auto Autoescuela donde están los alumnos.
+	 */
+	public static void actualizarAlumnosAutoescuelaPago(ArrayList<Alumnos> alumnosList, Autoescuela auto) {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
 		Iterator<Alumnos> it = auto.getLista_alumnos().iterator();
 		
@@ -229,7 +232,7 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	 * @param alumnos_totales Lista total de los alumnos matriculados en la autoescuela.
 	 * @return true si se han dado de baja correctamente, false si ha habido algún error.
 	 */
-	public boolean dar_de_baja_colectiva(Autoescuela auto) {
+	public static boolean dar_de_baja_colectiva(Autoescuela auto) {
 		//ArrayList que aloja la lista de alumnos aprobados.
 		ArrayList<Alumnos> aprobados = new ArrayList<Alumnos>();
 		
@@ -246,7 +249,13 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 		return true;
 	}
 	
-	public boolean dar_de_baja_individual(Persona p, Autoescuela auto) {
+	/**
+	 * Método que da de baja a una persona en individual, pudiendo elegir si profesor o alumno.
+	 * @param dni String con el dni de la persona a dar de baja
+	 * @param autoescuela Autoescuela que estamos gestionando
+ 	 * @return true si se ha dado de baja correctamente, false si ocurrió algun problema.
+	 */
+	public static boolean dar_de_baja_individual(Persona p, Autoescuela auto) {
 		if (p instanceof Alumnos) {
 			return dar_de_baja_individual_alumno(p.getDni(), auto);
 		} else {
@@ -262,7 +271,7 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	 * @param auto Autoescuela del alumno
 	 * @return True si se ha dado de baja correctamente, false si ocurrio algun problema.
 	 */
-	public boolean dar_de_baja_individual_alumno(String dni, Autoescuela auto) {
+	public static boolean dar_de_baja_individual_alumno(String dni, Autoescuela auto) {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
 		Iterator<Alumnos> it = auto.getLista_alumnos().iterator();
 		
@@ -279,7 +288,7 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 						retorno = true;
 					else {
 						//Si no tiene profesor asignado debe estar en la lista de espera.
-						this.lista_alum_espera.remove(alum);
+						auto.getLista_alum_espera().remove(alum);
 						retorno = true;
 					}
 				// Se le elimina de la lista general de la autoescuela.
@@ -295,7 +304,7 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 	 * @param alum Alumno a borrar
 	 * @return True si se ha encontrado y borrado al alumno, False si no existe ese alumno en ningun profesor.
 	 */
-	public boolean eliminaAlumnoDeProfe(Autoescuela auto, Alumnos alum) {
+	public static boolean eliminaAlumnoDeProfe(Autoescuela auto, Alumnos alum) {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
 		Iterator<Alumnos> it = null;
 		boolean hecho = false;
@@ -308,15 +317,6 @@ public class Recepcionista extends Persona implements tipos_matricula_examen {
 			}
 		}
 		return false;
-	}
-	
-	public String mostrarAlumnos() {
-		String cadena = "";
-		
-		for (Alumnos a: this.lista_alum_espera) {
-			cadena += a.toString() + "\n";
-		}
-		return cadena;
 	}
 	
 }

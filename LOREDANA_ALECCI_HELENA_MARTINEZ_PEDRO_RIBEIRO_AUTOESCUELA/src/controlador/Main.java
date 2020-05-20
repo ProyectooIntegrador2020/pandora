@@ -1,5 +1,6 @@
 package controlador;
 
+import Vista.Interfaz_principal;
 import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Coches;
@@ -11,9 +12,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Autoescuela Nochoques = new Autoescuela();
-		
-		Recepcionista r1 = new Recepcionista("54768392G", 33, "Pepa", 678123456);
+		Autoescuela nochoques = new Autoescuela();
 		
 		Coches coche1 = new Coches("JYX2345");
 		Coches coche2 = new Coches("HMD9876");
@@ -39,55 +38,55 @@ public class Main {
 		
 		float beneficios = 0;
 		
-		r1.alta(coche1, Nochoques);
-		r1.alta(coche2, Nochoques);
-		r1.alta(coche3, Nochoques);
+		Recepcionista.alta(coche1, nochoques);
+		Recepcionista.alta(coche2, nochoques);
+		Recepcionista.alta(coche3, nochoques);
 		
-		r1.alta(pr1, Nochoques);
-		r1.alta(pr2, Nochoques);
-		r1.alta(pr3, Nochoques);
+		Recepcionista.alta(pr1, nochoques);
+		Recepcionista.alta(pr2, nochoques);
+		Recepcionista.alta(pr3, nochoques);
 		
-		r1.alta(a1, Nochoques);
-		r1.alta(a2, Nochoques);
-		r1.alta(a3, Nochoques);
-		r1.alta(a4, Nochoques);
-		r1.alta(a5, Nochoques);
-		r1.alta(a6, Nochoques);
-		r1.alta(a7, Nochoques);
-		r1.alta(a8, Nochoques);
-		r1.alta(a9, Nochoques);
-		r1.alta(a10, Nochoques);
-		r1.alta(a11, Nochoques);
-		r1.alta(a12, Nochoques);
-		r1.alta(a13, Nochoques);
+		Recepcionista.alta(a1, nochoques);
+		Recepcionista.alta(a2, nochoques);
+		Recepcionista.alta(a3, nochoques);
+		Recepcionista.alta(a4, nochoques);
+		Recepcionista.alta(a5, nochoques);
+		Recepcionista.alta(a6, nochoques);
+		Recepcionista.alta(a7, nochoques);
+		Recepcionista.alta(a8, nochoques);
+		Recepcionista.alta(a9, nochoques);
+		Recepcionista.alta(a10, nochoques);
+		Recepcionista.alta(a11, nochoques);
+		Recepcionista.alta(a12, nochoques);
+		Recepcionista.alta(a13, nochoques);
 		
-		System.out.format("%s\n", Nochoques.toString());
+		System.out.format("%s\n", nochoques.toString());
 		
-		beneficios = r1.cobros(Nochoques);
+		beneficios = Recepcionista.cobros(nochoques);
 		
 		System.out.format("%s%f\n", "Los beneficios son: ", beneficios);
 		
-		System.out.format("%s\n", Nochoques.toString());
+		System.out.format("%s\n", nochoques.toString());
 		
 		System.out.format("%s\n", "Aprueban");
-		r1.gestionarAprobadosTeoricos(Nochoques);
+		Recepcionista.gestionarAprobadosTeoricos(nochoques);
 		
-		System.out.format("%s\n", Nochoques.toString());
+		System.out.format("%s\n", nochoques.toString());
 		
-		System.out.format("%s\n", r1.mostrarAlumnos());
+		System.out.format("%s\n", nochoques.mostrarAlumnosEspera());
 		
 		System.out.format("%s\n", "Aprueban");
-		r1.gestionarAprobadosTeoricos(Nochoques);
+		Recepcionista.gestionarAprobadosTeoricos(nochoques);
 		
-		System.out.format("%s\n", Nochoques.toString());
+		System.out.format("%s\n", nochoques.toString());
 		
-		System.out.format("%s\n", r1.mostrarAlumnos());
+		System.out.format("%s\n", nochoques.mostrarAlumnosEspera());
 		
 		System.out.format("%s\n", "Asignamos");
-		r1.asignar_alumno_profesor(Nochoques);
+		Recepcionista.asignar_alumno_profesor(nochoques);
 		
 		System.out.format("%s\n", "lista de espera:");
-		System.out.format("%s\n", r1.mostrarAlumnos());
+		System.out.format("%s\n", nochoques.mostrarAlumnosEspera());
 		
 		System.out.format("%s\n", "Profe 1");
 		System.out.format("%s\n", pr1.mostrarAlumnos());
@@ -99,25 +98,27 @@ public class Main {
 		System.out.format("%s\n", pr3.mostrarAlumnos());
 		
 		System.out.format("%s\n", "Damos de baja a Alvaro");
-		r1.dar_de_baja_individual(a2, Nochoques);
+		Recepcionista.dar_de_baja_individual(a2, nochoques);
 		
 		System.out.format("%s\n", "Profe 1");
 		System.out.format("%s\n", pr1.mostrarAlumnos());
 		
-		System.out.format("%s\n", Nochoques.toString());
+		System.out.format("%s\n", nochoques.toString());
 		
 		System.out.format("%s\n", "Damos de baja a Javier profe");
-		r1.dar_de_baja_individual(pr1, Nochoques);
+		Recepcionista.dar_de_baja_individual(pr1, nochoques);
 		
-		System.out.format("%s\n", Nochoques.toString());
+		System.out.format("%s\n", nochoques.toString());
 		
 		System.out.format("%s\n", "Damos de baja");
-		r1.dar_de_baja_colectiva(Nochoques);
+		Recepcionista.dar_de_baja_colectiva(nochoques);
 		
 		System.out.format("%s\n", "Profe 1");
 		System.out.format("%s\n", pr1.mostrarAlumnos());
 		
-		System.out.format("%s\n", Nochoques.toString());
+		System.out.format("%s\n", nochoques.toString());
+		
+		Interfaz_principal.ventana_principal(nochoques);
 		
 	}
 

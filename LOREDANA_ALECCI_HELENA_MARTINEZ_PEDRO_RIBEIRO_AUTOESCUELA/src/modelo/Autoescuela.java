@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Random;
 
 /**
@@ -17,12 +18,14 @@ public class Autoescuela implements tipos_matricula_examen {
 	private HashSet<Profesor> lista_profesores;
 	private HashSet<Alumnos> lista_alumnos;
 	private HashSet<Coches> lista_vehiculos;
+	private LinkedHashSet<Alumnos> lista_alum_espera;
 	private float beneficios;
 	
 	public Autoescuela() {
 		this.lista_profesores = new HashSet<Profesor>();
 		this.lista_alumnos = new HashSet<Alumnos>();
 		this.lista_vehiculos = new HashSet<Coches>();
+		this.lista_alum_espera = new LinkedHashSet<Alumnos>();
 		this.beneficios = 0f;
 	}
 	
@@ -99,6 +102,10 @@ public class Autoescuela implements tipos_matricula_examen {
 		return alumnosAprobados;
 	}
 	
+	/**
+	 * Método que muestra por pantalla la lista de alumnos de la autoescuela.
+	 * @return String Contenido de la lista de alumnos.
+	 */
 	public String mostrarAlumnos() {
 		String cadena = "\n";
 		
@@ -108,6 +115,10 @@ public class Autoescuela implements tipos_matricula_examen {
 		return cadena;
 	}
 	
+	/**
+	 * Método que muestra por pantalla la lista de coches de la autoescuela.
+	 * @return String Contenido de la lista de coches.
+	 */
 	public String mostrarCoches() {
 		String cadena = "\n";
 		
@@ -117,11 +128,28 @@ public class Autoescuela implements tipos_matricula_examen {
 		return cadena;
 	}
 	
+	/**
+	 * Método que muestra por pantalla la lista de profesores de la autoescuela.
+	 * @return String Contenido de la lista de profesores.
+	 */
 	public String mostrarProfes() {
 		String cadena = "\n";
 		
 		for (Profesor p: this.lista_profesores) {
 			cadena += p.toString() + "\n";
+		}
+		return cadena;
+	}
+	
+	/**
+	 * Método que muestra por pantalla la lista de alumnos en espera.
+	 * @return String Contenido de la lista de alumnos en espera.
+	 */
+	public String mostrarAlumnosEspera() {
+		String cadena = "";
+
+		for (Alumnos a: this.lista_alum_espera) {
+			cadena += a.toString() + "\n";
 		}
 		return cadena;
 	}
@@ -158,9 +186,17 @@ public class Autoescuela implements tipos_matricula_examen {
 		this.beneficios = beneficios;
 	}
 
+	public LinkedHashSet<Alumnos> getLista_alum_espera() {
+		return lista_alum_espera;
+	}
+
+	public void setLista_alum_espera(LinkedHashSet<Alumnos> lista_alum_espera) {
+		this.lista_alum_espera = lista_alum_espera;
+	}
+
 	@Override
 	public String toString() {
-		return "Autoescuela [beneficios=" + beneficios + ", " + mostrarAlumnos() + mostrarProfes() + mostrarCoches();
+		return "Autoescuela [beneficios=" + beneficios + ", " + "Alumnos matriculados: " + mostrarAlumnos() + "Profesores contratados: " + mostrarProfes() + "Coches en propiedad: " + mostrarCoches() + "Alumnos en lista de espera: " + mostrarAlumnosEspera();
 	}
 	
 }
