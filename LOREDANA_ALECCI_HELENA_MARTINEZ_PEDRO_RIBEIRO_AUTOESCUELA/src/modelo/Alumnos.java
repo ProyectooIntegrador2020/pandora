@@ -12,7 +12,7 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 	private tipoMatricula matricula_pagos;
 	private tipoExamen examen;
 	private boolean pagado;
-	private int clases_dadas;
+	private int clases_por_dar;
 
 	public Alumnos(String dni, int edad, String nombre, int num, tipoMatricula matricula) {
 		super(dni, edad, nombre, num);
@@ -20,7 +20,7 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 		this.num_intentos = 0;
 		this.examen = tipoExamen.teorico;
 		this.pagado = false;
-		this.clases_dadas = 0;
+		this.clases_por_dar = 0;
 	}
 	
 	public Alumnos(Alumnos a) {
@@ -29,7 +29,13 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 		this.matricula_pagos = a.getMatricula_pagos();
 		this.examen = a.getExamen();
 		this.pagado = a.isPagado();
-		this.clases_dadas = a.getClases_dadas();
+		this.clases_por_dar = a.getClases_por_dar();
+	}
+	
+	public void restarClases(int numClases) {
+		clases_por_dar -= numClases;
+		if (clases_por_dar <= 0)
+			pagado = false;
 	}
 
 	public int getNum_intentos() {
@@ -64,18 +70,18 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 		this.pagado = pagado;
 	}
 
-	public int getClases_dadas() {
-		return clases_dadas;
+	public int getClases_por_dar() {
+		return clases_por_dar;
 	}
 
-	public void setClases_dadas(int clases_dadas) {
-		this.clases_dadas = clases_dadas;
+	public void setClases_por_dar(int clases_dadas) {
+		this.clases_por_dar = clases_dadas;
 	}
 
 	@Override
 	public String toString() {
 		return "Alumno " + super.toString() + ", num_intentos=" + num_intentos + ", matricula_pagos=" + matricula_pagos + ", examen=" + examen
-				+ ", pagado=" + pagado + ", clases_dadas=" + clases_dadas + "]";
+				+ ", pagado=" + pagado + ", clases_por_dar=" + clases_por_dar + "]";
 	}
 	
 }

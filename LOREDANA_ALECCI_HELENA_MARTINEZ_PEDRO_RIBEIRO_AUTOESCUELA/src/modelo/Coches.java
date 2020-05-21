@@ -15,12 +15,14 @@ public class Coches {
 	private HashSet<Arreglo> lista_arreglos;
 	private float litros_gasolina;
 	private float precio_gasolina;
+	private final int gasolina_max;
 	
 	public Coches(String matricula) {
 		this.matricula = matricula;
 		this.lista_arreglos = new HashSet<Arreglo>();
-		this.litros_gasolina = 0f;
+		this.litros_gasolina = 60f;
 		this.precio_gasolina = 0f;
+		this.gasolina_max = 60;
 	}
 	
 	/**
@@ -35,6 +37,7 @@ public class Coches {
 			this.lista_arreglos = new HashSet<Arreglo>();
 		this.litros_gasolina = c.getLitros_gasolina();
 		this.precio_gasolina = c.getPrecio_gasolina();
+		this.gasolina_max = c.getGasolina_max();
 	}
 	
 	/**
@@ -42,7 +45,13 @@ public class Coches {
 	 * precio de la gasolina usada.
 	 */
 	public void repostar() {
-		
+		float aRepostar = gasolina_max - litros_gasolina;
+		precio_gasolina += aRepostar*1.33;
+		litros_gasolina = gasolina_max;
+	}
+
+	public int getGasolina_max() {
+		return gasolina_max;
 	}
 
 	public String getMatricula() {

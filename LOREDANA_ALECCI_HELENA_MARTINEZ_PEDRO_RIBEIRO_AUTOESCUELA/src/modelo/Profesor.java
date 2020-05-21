@@ -26,8 +26,6 @@ public class Profesor extends Persona {
 		return lista_alumnos_prac;
 	}
 
-
-
 	public void setLista_alumnos_prac(HashSet<Alumnos> lista_alumnos_prac) {
 		this.lista_alumnos_prac = lista_alumnos_prac;
 	}
@@ -46,17 +44,60 @@ public class Profesor extends Persona {
 
 	
 	/**
-	 * Método que añade una clase impartida al alumnno correspondiente.
+	 * Método que añade un numero de clases impartidas al alumnno correspondiente y anota cuanta gasolina ha gastado.
+	 * @param numClases Número de clases que ha impartido.
+	 * @param Dni dni del alumno al que ha impartido clases.
 	 */
-	public void imparte_clase() {
+	public String imparte_clase(int numClases, String dni) {
+		
+		boolean hecho = false;
+		String retorno = "";
+		
+		//Si el coche no tiene gasolina no se imparten clases.
+		if (coche.getLitros_gasolina() == 0)
+			return "No hay gasolina para dar clases.";
+		
+		//Recorre la lista de alumnos para encontrar al que dio clases y restarselas.
+		for (Alumnos a: lista_alumnos_prac) {
+			if (a.getDni().equalsIgnoreCase(dni)) {
+				a.restarClases(numClases);
+				retorno += "Se han impartido " + numClases + " clases al alumno/a " + a.getNombre();
+				hecho = true;
+				break;
+			}
+		}
+		//Si no se encontró al alumno no se registran las clases.
+		if (!hecho)
+			return "El alumno que introdujiste no existe. No se han registrado las clases.";
+		
+		restarGasolina(numClases);
+		
+		return retorno;
 		
 	}
 	
 	/**
-	 * Método que permite añadir un arreglo necesario al coche asignado del profesor.
+	 * Método que resta la gasolina de forma proporcional a las clases impartidas.
+	 * @param numClases Número de clases dadas.
 	 */
-	public void necesidad_arreglo() {
-		
+	public void restarGasolina(int numClases) {
+		//Si se encontró se gastará unos litros de gasolina proporcionales al numero de clases impartidas.
+		if (numClases <= 5)
+			coche.setLitros_gasolina(coche.getLitros_gasolina()-15);
+		else if (numClases > 5 && numClases <= 10)
+			coche.setLitros_gasolina(coche.getLitros_gasolina()-30);
+		else if (numClases > 10) {
+			coche.setLitros_gasolina(coche.getLitros_gasolina()-50);
+		}
+	}
+	
+	/**
+	 * Método que permite añadir un arreglo necesario al coche asignado del profesor.
+	 * @param Nombre del arreglo
+	 * @param Precio del arreglo
+	 */
+	public void necesidad_arreglo(String nombre, float precio) {
+		coche.getLista_arreglos().add(new Arreglo(nombre, precio));
 	}
 	
 	public String mostrarAlumnos() {

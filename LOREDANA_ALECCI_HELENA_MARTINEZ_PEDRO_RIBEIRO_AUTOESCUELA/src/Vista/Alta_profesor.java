@@ -112,16 +112,26 @@ public class Alta_profesor {
 		ventana3.setVisible(true);
 	}
 	
+	/**
+	 * Método que escoje un coche de la lista de coches de la autoescuela y la asigna al profesor en el momento en el
+	 * que se le da de alta
+	 * @param matricula String con la matricula del coche
+	 * @param Autoescuela donde se va a dar de alta al profesor
+	 * @return Coche a asignar al profesor 
+	 */
 	public Coches asignar_coche(String matricula, Autoescuela a) {
-		HashSet<Coches> lista = a.getLista_vehiculos();
-		Iterator<Coches> it = lista.iterator();
-		while(it.hasNext()) {
-			Coches c= it.next();
-			if(matricula.equals(c.getMatricula())){
+		//Variable que almacena un coche nuevo en caso de necesitarlo.
+		Coches nuevo = null;
+		//Recorro la lista de coches de la autoescuela
+		for (Coches c: a.getLista_vehiculos()) {
+			//Si coincide con la matricula pasada devuelve el coche actual.
+			if (c.getMatricula().equalsIgnoreCase(matricula))
 				return c;
-			}
 		}
-		return null;
-	
+		//Si se sale del bucle y llega aqui es porque no ha habido coincidencias. El coche no existe. Se crea uno,
+		// se le da de alta en la autoescuela y se devuelve.
+		nuevo = new Coches(matricula);
+		Recepcionista.alta(nuevo, a);
+		return nuevo;
 	}
 }

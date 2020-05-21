@@ -1,9 +1,18 @@
 package modelo;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
+
+import modelo.tipos_matricula_examen.tipoMatricula;
 
 /**
  * Clase que almacena los alumnos que gestiona el recepcionista y contiene sus principales funciones.
@@ -12,6 +21,58 @@ import java.util.LinkedHashSet;
  * @author Pedro Ribeiro
  */
 public class Recepcionista implements tipos_matricula_examen {
+	
+	/**
+	 * Método que matricula unos alumnos por defecto al iniciar la aplicación cogiendo los datos de un fichero de
+	 * texto.
+	 * @param Autoescuela donde se van a matricular.
+	 * @throws FileNotFoundException Si no se encuentra el fichero a leer
+	 * @throws IOException Si se produce algún otro error manejando el fichero.
+	 */
+	public static void alumnosBase(Autoescuela a) throws FileNotFoundException, IOException {
+		File alumnos = new File("alumnosIniciales.txt");
+		FileReader fr = new FileReader(alumnos);
+		BufferedReader bfr = new BufferedReader(fr);
+		
+		//Variable que va a almacenar cada línea del fichero.
+		String leido = "";
+		//Lista de palabras para almacenar uno por uno cada dato a usar.
+		List<String> splits;
+		
+		//Mientras haya lienas que leer:
+		while ((leido = bfr.readLine())!= null) {
+			//Separamos la linea por palabras usando la coma "," como separador y las almacenamos en la lista.
+			splits = Arrays.asList(leido.split(","));
+			//Damos de alta el alumno creando cada alumno directamente en los parametros del metodo.
+			alta(new Alumnos(splits.get(0), Integer.parseInt(splits.get(1)), splits.get(2), Integer.parseInt(splits.get(3)), asignar_matricula(Integer.parseInt(splits.get(4)))), a);
+		}
+		
+		bfr.close();
+		fr.close();
+	}
+	
+	/**
+	 * Método que asigna un tipo de matrícula según un numero.
+	 * @param numero que indica que tipo de matricula asignamos.
+	 * @return opción del tipo enum "tipoMatricula".
+	 */
+	public static tipoMatricula asignar_matricula(int numero) {
+		tipoMatricula tm = null;
+		switch (numero) {
+		case 1:
+			tm=tipoMatricula.basico;
+			break;
+		case 2:
+			tm=tipoMatricula.intermedio;
+			break;
+		case 3:
+			tm=tipoMatricula.completo;
+			break;
+		default:
+			break;
+		}
+		return tm;
+	}
 	
 	/**
 	 * Método que da de alta a una persona (puede ser alumno, trabajador o recepcionista).
@@ -57,12 +118,19 @@ public class Recepcionista implements tipos_matricula_examen {
 			switch(tipoM) {
 				case basico:
 					cobros+=200;
+					a.setClases_por_dar(10);
+					break;
 				case intermedio:
 					cobros+=400;
+					a.setClases_por_dar(15);
+					break;
 				case completo:
 					cobros+=800;
+					a.setClases_por_dar(25);
+					break;
 				default:
 					cobros+=200;
+					break;
 			}
 		}
 		
@@ -80,16 +148,20 @@ public class Recepcionista implements tipos_matricula_examen {
 	 */
 	public static float pagos_arreglos(float cobros, Autoescuela a) {
 		float pagos = 0;
+		Iterator<Arreglo> it;
 		
 		//Recorro la lista de coches que tiene la autoescuela.
 		for (Coches c: a.getLista_vehiculos()) {
+			it = c.getLista_arreglos().iterator();
 			//Recorro la lista de arreglos que tiene cada coche.
-			for (Arreglo arr: c.getLista_arreglos()) {
+			while (it.hasNext()) {
 				//Por cada arreglo se va a coger el precio y se va a acumular en "pagos".
-				pagos+= arr.getPrecio();
+				pagos+= it.next().getPrecio();
+				it.remove();
 			}
 			//Por cada coche se va a coger el precio de la gasolina repostada y se va a acumular en "pagos".
 			pagos+=c.getPrecio_gasolina();
+			c.setPrecio_gasolina(0);
 		}
 		
 		//Devuelve el resultado de restar los pagos a los cobros, es decir, el beneficio final.
@@ -215,6 +287,7 @@ public class Recepcionista implements tipos_matricula_examen {
 				if (a.equals(alum)) {
 					//Se actualiza el tipo de examen que tiene pendiente
 					alum.setPagado(true);
+					alum.setClases_por_dar(a.getClases_por_dar());
 					//Se registra que se ha hecho un cambio
 					hecho = true;
 				}
@@ -255,14 +328,56 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * @param autoescuela Autoescuela que estamos gestionando
  	 * @return true si se ha dado de baja correctamente, false si ocurrió algun problema.
 	 */
-	public static boolean dar_de_baja_individual(Persona p, Autoescuela auto) {
-		if (p instanceof Alumnos) {
-			return dar_de_baja_individual_alumno(p.getDni(), auto);
-		} else {
-			Profesor pr = (Profesor)p;
-			return auto.getLista_profesores().remove(pr);
+	public static boolean dar_de_baja_individual(String dni, Autoescuela auto) {
+		//Iterador para la lista de profesores por si necesitamos usarlo
+		Iterator<Profesor> it = auto.getLista_profesores().iterator();
+		
+		Profesor aux = null;
+		
+		//Recorremos la lista de alumnos para ver si hay coincidencias con el dni pasado por parametro.
+		for (Alumnos a: auto.getLista_alumnos()) {
+			//Si coincide se procede a dar de baja al alumno.
+			if (a.getDni().equalsIgnoreCase(dni))
+				return dar_de_baja_individual_alumno(dni, auto);
 		}
-			
+		
+		//Si no hay coincidencias con un alumno, debe ser un profesor. Se recorre la lista de profesores con un iterator
+		// Porque si no no se podria borrar un elemento de una lista que se está recorriendo.
+		while (it.hasNext()) {
+			aux = it.next();
+			if (aux.getDni().equalsIgnoreCase(dni)) {
+				reubicarAlumnosEnPrac(aux, auto);
+				it.remove();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static void reubicarAlumnosEnPrac(Profesor profe, Autoescuela auto) {
+		Iterator<Alumnos> it = profe.getLista_alumnos_prac().iterator();
+		//Se recorre la lista de profesores de la autoescuela
+		for (Profesor p: auto.getLista_profesores()) {
+			//Chequea si el profesor tiene menos de 10 alumnos asignados. 10 sería el maximo de alumnos.
+			if (p.getLista_alumnos_prac().size() < 10) {
+				//Coge a los primeros en la lista de espera y los asigna a ese profesor hasta que no pueda coger más.
+				while (it.hasNext() && (p.getLista_alumnos_prac().size() < 10)) {
+					p.getLista_alumnos_prac().add(it.next());
+					it.remove();
+				}
+			}
+			//Si la lista de alumnos del profe se ha quedado vacía, se sale del bucle para que no siga comprobando el hueco del resto
+			// de profesores.
+			if (profe.getLista_alumnos_prac().size() == 0)
+				break;
+		}
+		//Si ya no hay profes libres el resto de alumnos se les ponen en esperas.
+		if (profe.getLista_alumnos_prac().size() > 0) {
+			while (it.hasNext()) {
+				auto.getLista_alum_espera().add(it.next());
+				it.remove();
+			}
+		}
 	}
 	
 	/**

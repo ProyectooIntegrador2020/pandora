@@ -30,10 +30,19 @@ public class Autoescuela implements tipos_matricula_examen {
 	}
 	
 	/**
-	 * Método encargado de repartir el beneficio a los trabajadores.
+	 * Método encargado de repartir el beneficio a los trabajadores, y en caso de que sobre se almacena para el mes
+	 * siguiente.
+	 * @param Cobros finales a repartir entre profesores.
 	 */
-	public void pago_personal() {
-		
+	public void pago_personal(float cobros) {
+		//Dinero a repartir este mes es los cobros recientes más los beneficios acumulados.
+		float beneficios = cobros + this.beneficios;
+		//Si tenemos para pagarle el sueldo completo a cada profesor, lo pagamos y el resto se almacena.
+		if ((beneficios/lista_profesores.size()) >= 2000) {
+			beneficios -= 2000*lista_profesores.size();
+			this.beneficios = beneficios;
+		} else //Si no hay suficiente para todos, se entiende que se reparte lo que haya entre los profesores y los beneficios se quedan a 0.
+			this.beneficios = 0;
 	}
 	
 	/**
@@ -146,12 +155,32 @@ public class Autoescuela implements tipos_matricula_examen {
 	 * @return String Contenido de la lista de alumnos en espera.
 	 */
 	public String mostrarAlumnosEspera() {
-		String cadena = "";
+		String cadena = "\n";
 
 		for (Alumnos a: this.lista_alum_espera) {
 			cadena += a.toString() + "\n";
 		}
 		return cadena;
+	}
+	
+	/**
+	 * Método que muestra la info de un alumno, un profesor o un coche en particular.
+	 * @param ID Dni o matrícula de coche.
+	 * @return Información del elemento requerido o un mensaje de error si no hay coincidencias.
+	 */
+	public String mostrarInfoIndividual(String id) {
+		
+		for (Alumnos a: lista_alumnos)
+			if (a.getDni().equalsIgnoreCase(id))
+				return a.toString();
+		for (Profesor p: lista_profesores)
+			if (p.getDni().equalsIgnoreCase(id))
+				return p.toString();
+		for (Coches c: lista_vehiculos)
+			if (c.getMatricula().equalsIgnoreCase(id))
+				return c.toString();
+		
+		return "No existen datos asignados a esa id.";
 	}
 
 	public HashSet<Profesor> getLista_profesores() {
