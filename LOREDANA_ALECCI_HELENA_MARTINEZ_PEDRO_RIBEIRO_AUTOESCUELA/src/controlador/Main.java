@@ -5,12 +5,10 @@ import java.io.IOException;
 import java.util.ConcurrentModificationException;
 
 import Vista.Interfaz_principal;
-import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Coches;
 import modelo.Profesor;
 import modelo.Recepcionista;
-import modelo.tipos_matricula_examen.tipoMatricula;
 
 public class Main {
 
@@ -128,7 +126,7 @@ public class Main {
 			e.getStackTrace();
 		}
 		
-		//Interfaz_principal.ventana_principal(nochoques);
+		Interfaz_principal.ventana_principal(nochoques);
 		
 	}
 

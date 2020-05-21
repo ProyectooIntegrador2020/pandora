@@ -14,7 +14,15 @@ import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Recepcionista;
 import modelo.tipos_matricula_examen.tipoMatricula;
-
+/**
+ * Esta clase es una interfaz, dentro de la interfaz principal, la cual se va a encargar de dar de alta a un
+ * alumno. Se ejecutará con el botón ALUMNO.
+ * 
+ * @author Loredana Alecci
+ * @author Helena Martinez
+ * @author Pedro Ribeiro
+ *
+ */
 
 public class Alta_alumno {
 	JFrame ventana2;
@@ -24,19 +32,28 @@ public class Alta_alumno {
 		pinta(a);
 	}
 	
+	/**
+	 * Método que se encarga de crear y hacer visible la interfaz
+	 * @param Autoescuela
+	 */
 	private void pinta(Autoescuela a) {
 		ventana2 = new JFrame();
 		ventana2.setSize(600, 400);
 		//Cierra sólo la ventana
 		ventana2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		//La ventana se abre en el centro de la pantalla
 		ventana2.setLocationRelativeTo(null);
 		p = new JPanel();
 		ventana2.add(p);
+		//Va a insertar un Layout que nos va a permitir crear los BOUNDS de las cositas
 		p.setLayout(null);
 		
 		JLabel titulo = new JLabel("AUTOESCUELA NOCHOQUES");
+		//Color del fondo: Necesito Color+.+"nombre del color"
 		titulo.setForeground(Color.BLUE);
+		//El número es el tamaño de la letra
 		titulo.setFont(new Font("Showcard Gothic", Font.BOLD, 30));
+		//x - y - ancho - largo
 		titulo.setBounds(85, 11, 500, 44);
 		p.add(titulo);
 		
@@ -49,55 +66,70 @@ public class Alta_alumno {
 		p.add(escrito_nombre);
 		
 		JLabel dni = new JLabel("DNI");
-		dni.setBounds(110, 110, 100, 20);
+		dni.setBounds(110, 100, 100, 20);
 		p.add(dni);
 		
 		JTextField escrito_dni = new JTextField(15);
-		escrito_dni.setBounds(200, 110, 200, 20);
+		escrito_dni.setBounds(200, 100, 200, 20);
 		p.add(escrito_dni);
 		
 		JLabel edad = new JLabel("EDAD");
-		edad.setBounds(110, 150, 100, 20);
+		edad.setBounds(110, 130, 100, 20);
 		p.add(edad);
 		
 		JTextField escrito_edad = new JTextField(15);
-		escrito_edad.setBounds(200, 150, 200, 20);
-		p.add(escrito_edad)
-		;
+		escrito_edad.setBounds(200, 130, 200, 20);
+		p.add(escrito_edad);
+		
 		JLabel telefono = new JLabel("TELÉFONO");
-		telefono.setBounds(110, 190, 100, 20);
+		telefono.setBounds(110, 160, 100, 20);
 		p.add(telefono);
 		
 		JTextField escrito_tel = new JTextField(15);
-		escrito_tel.setBounds(200, 190, 200, 20);
+		escrito_tel.setBounds(200, 160, 200, 20);
 		p.add(escrito_tel);
 		
-		JLabel num_matricula = new JLabel("TIPO MATRÍCULA");
-		telefono.setBounds(110, 190, 100, 20);
+		JLabel descripcion = new JLabel("1(BÁSICO) 2(INTERMEDIO) 3(COMPLETO)");
+		descripcion.setFont(new Font("SimSun", Font.BOLD, 14));
+		descripcion.setBounds(160, 190, 250, 18);
+		p.add(descripcion);
+		
+		JLabel num_matricula = new JLabel("TIPO MTR");
+		num_matricula.setBounds(110, 220, 100, 20);
 		p.add(num_matricula);
 		
 		JTextField escrito_num_matricula = new JTextField(15);
-		escrito_tel.setBounds(200, 190, 200, 20);
+		escrito_num_matricula.setBounds(200, 220, 200, 20);
 		p.add(escrito_num_matricula);
 		
+		//Boton que va a dar de alta al alumno que hayamos creado
 		JButton boton_aceptar = new JButton("ACEPTAR");
-		boton_aceptar.setBounds(200, 300, 200, 20);
+		boton_aceptar.setBounds(200, 270, 200, 20);
 		ActionListener aceptar = new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//Variables
 				String dni_alumno;
 				String nombre_alumno;
 				int edad_alumno;
 				int num;
 				int numero_matricula;
+				//A cada variable le asigno lo que saque del JTextField()
 				dni_alumno = escrito_dni.getText();
+				//OJOOOO lo paso a integer porque el TEXTO me viene como STRING
 				edad_alumno= Integer.parseInt(escrito_edad.getText());
 				nombre_alumno = escrito_nombre.getText();
 				num = Integer.parseInt(escrito_tel.getText());
 				numero_matricula=Integer.parseInt(escrito_num_matricula.getText());
 				Alumnos alumno = new Alumnos(dni_alumno, edad_alumno, nombre_alumno, num, asignar_matricula(numero_matricula));
 				Recepcionista.alta(alumno, a);
+				//Borramos todo
+				escrito_nombre.setText(null);
+				escrito_dni.setText(null);
+				escrito_edad.setText(null);
+				escrito_tel.setText(null);
+				escrito_num_matricula.setText(null);
 			}
 		};
 		
@@ -107,6 +139,11 @@ public class Alta_alumno {
 		ventana2.setVisible(true);
 	}
 	
+	/**
+	 * Método que va a asignar el tipo de matrícula
+	 * @param numero para identificar el tipo de matrícula
+	 * @return el tipo de matrícula
+	 */
 	public tipoMatricula asignar_matricula(int numero) {
 		tipoMatricula tm = null;
 		switch (numero) {
