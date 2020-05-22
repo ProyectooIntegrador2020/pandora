@@ -5,16 +5,19 @@ import java.io.IOException;
 import java.util.ConcurrentModificationException;
 
 import Vista.Interfaz_principal;
+import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Coches;
 import modelo.Profesor;
 import modelo.Recepcionista;
+import modelo.tipos_matricula_examen.tipoMatricula;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Autoescuela nochoques = new Autoescuela();
+		//Autoescuela u = null;
 		
 		Coches coche1 = new Coches("JYX2345");
 		Coches coche2 = new Coches("HMD9876");
@@ -78,8 +81,27 @@ public class Main {
 			System.out.format("%s\n", "Profe 3");
 			System.out.format("%s\n", pr3.mostrarAlumnos());
 			
-			System.out.format("%s\n", "Damos de baja a Alvaro");
-			Recepcionista.dar_de_baja_individual("13608795J", nochoques);
+			System.out.format("%s\n", "Profe 1 imparte clases a Alvaro.");
+			System.out.format("%s\n", pr1.imparte_clase(nochoques, 7, "13608795J"));
+			System.out.format("%s\n", pr1.imparte_clase(nochoques, 10, "13608795J"));
+			pr1.getCoche().repostar(nochoques);
+			System.out.format("%s\n", pr1.imparte_clase(nochoques, 10, "13608795J"));
+			
+			pr1.necesidad_arreglo("Cambio de Aceite", 10.10f, nochoques);
+			
+			System.out.format("%s\n", "Coche de pr1");
+			System.out.format("%s\n", nochoques.mostrarInfoIndividual("JYX2345"));
+			
+			System.out.format("%s\n", "INFO AUTOESCUELA");
+			System.out.format("%s\n", nochoques.toString());
+			
+			nochoques.pago_personal(Recepcionista.cobros(nochoques));
+			
+			System.out.format("%s\n", "Coche de pr1");
+			System.out.format("%s\n", nochoques.mostrarInfoIndividual("JYX2345"));
+			
+			System.out.format("%s\n", "Damos de baja a Loredana");
+			Recepcionista.dar_de_baja_individual("24719806K", nochoques);
 			
 			System.out.format("%s\n", "Profe 1");
 			System.out.format("%s\n", pr1.mostrarAlumnos());
@@ -126,7 +148,7 @@ public class Main {
 			e.getStackTrace();
 		}
 		
-		Interfaz_principal.ventana_principal(nochoques);
+		//Interfaz_principal.ventana_principal(nochoques);
 		
 	}
 

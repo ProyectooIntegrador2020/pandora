@@ -8,7 +8,6 @@ package modelo;
  */
 public class Alumnos extends Persona implements tipos_matricula_examen {
 	
-	private int num_intentos;
 	private tipoMatricula matricula_pagos;
 	private tipoExamen examen;
 	private boolean pagado;
@@ -17,7 +16,6 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 	public Alumnos(String dni, int edad, String nombre, int num, tipoMatricula matricula) {
 		super(dni, edad, nombre, num);
 		this.matricula_pagos = matricula;
-		this.num_intentos = 0;
 		this.examen = tipoExamen.teorico;
 		this.pagado = false;
 		this.clases_por_dar = 0;
@@ -25,25 +23,33 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 	
 	public Alumnos(Alumnos a) {
 		super(a);
-		this.num_intentos = a.getNum_intentos();
 		this.matricula_pagos = a.getMatricula_pagos();
 		this.examen = a.getExamen();
 		this.pagado = a.isPagado();
 		this.clases_por_dar = a.getClases_por_dar();
 	}
 	
-	public void restarClases(int numClases) {
+	/**
+	 * Método que resta clases pendientes al alumno.
+	 * @param numClases a restar.
+	 * @return true si se han restado clases, false si su numero pendiente de clases es 0.
+	 */
+	public boolean restarClases(int numClases) {
+		//Si el alumno no le quedan clases por dar devuelve falso
+		if (clases_por_dar == 0)
+			return false;
+		//Si el numero de clases a dar es mayor de las que le quedan al alumno, se hacen solo las que le quedan al alumno.
+		if (numClases > clases_por_dar)
+			numClases = clases_por_dar;
+		//Se restan las clases
 		clases_por_dar -= numClases;
+		
+		//Si se ha quedado sin clases se le resetea el estado de pago para que pague la matrícula de nuevo.
 		if (clases_por_dar <= 0)
 			pagado = false;
-	}
-
-	public int getNum_intentos() {
-		return num_intentos;
-	}
-
-	public void setNum_intentos(int num_intentos) {
-		this.num_intentos = num_intentos;
+		
+		//Devuelve true si se han restado clases.
+		return true;
 	}
 
 	public tipoMatricula getMatricula_pagos() {
@@ -80,7 +86,7 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 
 	@Override
 	public String toString() {
-		return "Alumno " + super.toString() + ", num_intentos=" + num_intentos + ", matricula_pagos=" + matricula_pagos + ", examen=" + examen
+		return "Alumno " + super.toString() + ", matricula_pagos=" + matricula_pagos + ", examen=" + examen
 				+ ", pagado=" + pagado + ", clases_por_dar=" + clases_por_dar + "]";
 	}
 	

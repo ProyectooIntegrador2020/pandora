@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Clase que contiene la información sobre cada coche que dispone la autoescuela y sus profesores. También contiene la
@@ -32,7 +33,7 @@ public class Coches {
 	public Coches(Coches c) {
 		this.matricula = c.getMatricula();
 		if (c.getLista_arreglos().size() > 0)
-			this.lista_arreglos.addAll(c.getLista_arreglos());
+			this.lista_arreglos = c.getLista_arreglos();
 		else
 			this.lista_arreglos = new HashSet<Arreglo>();
 		this.litros_gasolina = c.getLitros_gasolina();
@@ -43,11 +44,30 @@ public class Coches {
 	/**
 	 * Método que le añade los litros de gasolina necesarios al coche cuando éste se quede vacío. También almacena el
 	 * precio de la gasolina usada.
+	 * @param Autoescuela Autoescuela donde se va a actualizar el estado del vehiculo.
 	 */
-	public void repostar() {
+	public void repostar(Autoescuela auto) {
+		//Solo se va a repostar los litros que faltan para llegar a los 60
 		float aRepostar = gasolina_max - litros_gasolina;
 		precio_gasolina += aRepostar*1.33;
 		litros_gasolina = gasolina_max;
+		actualizarVehiculoEnAutoescuela(auto);
+	}
+	
+	/**
+	 * Método que actualiza los datos del coche en la lista de vehiculos de la autoescuela.
+	 * @param Autoescuela donde se va a actualizar.
+	 */
+	public void actualizarVehiculoEnAutoescuela(Autoescuela auto) {
+		//Recorro la lista de vehiculos de la autoescuela
+		Iterator<Coches> it = auto.getLista_vehiculos().iterator();
+		//Buscamos que coche estamos modificando y lo eliminamos de la lista.
+		while (it.hasNext()) {
+			if (it.next().getMatricula().equalsIgnoreCase(this.matricula))
+				it.remove();
+		}
+		//Metemos de nuevo el coche en la lista actualizada
+		auto.getLista_vehiculos().add(this);
 	}
 
 	public int getGasolina_max() {
@@ -85,11 +105,32 @@ public class Coches {
 	public void setPrecio_gasolina(float precio_gasolina) {
 		this.precio_gasolina = precio_gasolina;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (this instanceof Coches) {
+			Coches c = (Coches) o;
+			if (this.matricula.equalsIgnoreCase(c.getMatricula()))
+				return true;
+		}
+		return false;
+	}
+	
+	public String mostrarArreglos() {
+		String cadena = "\n";
+
+		for (Arreglo a: this.lista_arreglos) {
+			cadena += a.toString() + "\n";
+		}
+		return cadena;
+	}
 
 	@Override
 	public String toString() {
 		return "Coche [matricula=" + matricula + ", litros_gasolina=" + litros_gasolina + ", precio_gasolina="
-				+ precio_gasolina + "]";
+				+ precio_gasolina + mostrarArreglos();
 	}
 	
 }

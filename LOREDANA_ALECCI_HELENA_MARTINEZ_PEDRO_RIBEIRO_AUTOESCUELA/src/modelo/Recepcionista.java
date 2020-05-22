@@ -162,6 +162,11 @@ public class Recepcionista implements tipos_matricula_examen {
 			//Por cada coche se va a coger el precio de la gasolina repostada y se va a acumular en "pagos".
 			pagos+=c.getPrecio_gasolina();
 			c.setPrecio_gasolina(0);
+			//Actualizamos el estado del coche dentro del profesor.
+			for (Profesor p: a.getLista_profesores()) {
+				if (p.getCoche().equals(c))
+					p.setCoche(new Coches(c));
+			}
 		}
 		
 		//Devuelve el resultado de restar los pagos a los cobros, es decir, el beneficio final.
@@ -354,6 +359,11 @@ public class Recepcionista implements tipos_matricula_examen {
 		return false;
 	}
 	
+	/**
+	 * Método que reparte los alumnos de un profesor entre el resto de profesores.
+	 * @param profe Profesor a ser borrado
+	 * @param Autoescuela Autoescuela gestionada.
+	 */
 	public static void reubicarAlumnosEnPrac(Profesor profe, Autoescuela auto) {
 		Iterator<Alumnos> it = profe.getLista_alumnos_prac().iterator();
 		//Se recorre la lista de profesores de la autoescuela

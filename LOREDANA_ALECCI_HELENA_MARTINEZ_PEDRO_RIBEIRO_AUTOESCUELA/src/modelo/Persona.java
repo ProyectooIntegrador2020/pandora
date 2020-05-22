@@ -61,7 +61,7 @@ public class Persona {
 
 	@Override
 	public String toString() {
-		return "[dni=" + dni + ", edad=" + edad + ", nombre=" + nombre + "\n" + ", num_tel=" + num_tel ;
+		return "[dni=" + dni + ", edad=" + edad + ", nombre=" + nombre + ", num_tel=" + num_tel;
 	}
 	
 	@Override

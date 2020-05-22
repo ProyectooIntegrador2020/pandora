@@ -47,8 +47,9 @@ public class Profesor extends Persona {
 	 * Método que añade un numero de clases impartidas al alumnno correspondiente y anota cuanta gasolina ha gastado.
 	 * @param numClases Número de clases que ha impartido.
 	 * @param Dni dni del alumno al que ha impartido clases.
+	 * @param Autoescuela que se está gestionando
 	 */
-	public String imparte_clase(int numClases, String dni) {
+	public String imparte_clase(Autoescuela auto, int numClases, String dni) {
 		
 		boolean hecho = false;
 		String retorno = "";
@@ -60,7 +61,9 @@ public class Profesor extends Persona {
 		//Recorre la lista de alumnos para encontrar al que dio clases y restarselas.
 		for (Alumnos a: lista_alumnos_prac) {
 			if (a.getDni().equalsIgnoreCase(dni)) {
-				a.restarClases(numClases);
+				//Si no se han podido restar clases al alumno se sale del bucle y se cancela el resto de la operacion.
+				if (!a.restarClases(numClases))
+					break;
 				retorno += "Se han impartido " + numClases + " clases al alumno/a " + a.getNombre();
 				hecho = true;
 				break;
@@ -68,9 +71,9 @@ public class Profesor extends Persona {
 		}
 		//Si no se encontró al alumno no se registran las clases.
 		if (!hecho)
-			return "El alumno que introdujiste no existe. No se han registrado las clases.";
+			return "El alumno que introdujiste no existe o no le quedan clases.";
 		
-		restarGasolina(numClases);
+		restarGasolina(numClases, auto);
 		
 		return retorno;
 		
@@ -79,8 +82,9 @@ public class Profesor extends Persona {
 	/**
 	 * Método que resta la gasolina de forma proporcional a las clases impartidas.
 	 * @param numClases Número de clases dadas.
+	 * @param Autoescuela que se está gestionando
 	 */
-	public void restarGasolina(int numClases) {
+	public void restarGasolina(int numClases, Autoescuela auto) {
 		//Si se encontró se gastará unos litros de gasolina proporcionales al numero de clases impartidas.
 		if (numClases <= 5)
 			coche.setLitros_gasolina(coche.getLitros_gasolina()-15);
@@ -89,17 +93,24 @@ public class Profesor extends Persona {
 		else if (numClases > 10) {
 			coche.setLitros_gasolina(coche.getLitros_gasolina()-50);
 		}
+		coche.actualizarVehiculoEnAutoescuela(auto);
 	}
 	
 	/**
 	 * Método que permite añadir un arreglo necesario al coche asignado del profesor.
 	 * @param Nombre del arreglo
 	 * @param Precio del arreglo
+	 * @param Autoescuela que se está gestionando
 	 */
-	public void necesidad_arreglo(String nombre, float precio) {
+	public void necesidad_arreglo(String nombre, float precio, Autoescuela auto) {
 		coche.getLista_arreglos().add(new Arreglo(nombre, precio));
+		coche.actualizarVehiculoEnAutoescuela(auto);
 	}
 	
+	/**
+	 * Método que muestra los alumnos que tiene asignado el profesor
+	 * @return Informacion de los alumnos.
+	 */
 	public String mostrarAlumnos() {
 		String cadena = "\n";
 		
