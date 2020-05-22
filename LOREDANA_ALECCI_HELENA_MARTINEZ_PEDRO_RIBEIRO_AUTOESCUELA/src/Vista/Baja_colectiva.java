@@ -61,7 +61,7 @@ public class Baja_colectiva {
 		listo.setBounds(270, 200, 200, 20);
 		p.add(listo);
 		
-		//Boton que va a dar de baja al alumno que hayamos creado
+		//Boton que va a dar de baja a todos los que estén aprobados
 		JButton boton_aceptar = new JButton("DAR DE BAJA");
 		boton_aceptar.setBounds(200, 100, 200, 20);
 		ActionListener aceptar = new ActionListener() {

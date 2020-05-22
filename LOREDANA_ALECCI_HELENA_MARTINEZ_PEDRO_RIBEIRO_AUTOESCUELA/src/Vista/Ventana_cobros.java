@@ -60,7 +60,7 @@ public class Ventana_cobros {
 		listo.setBounds(270, 200, 200, 20);
 		p.add(listo);
 		
-		//Boton que va a dar de baja al alumno que hayamos creado
+		//Boton que va a realizar el cobro
 		JButton boton_aceptar = new JButton("COBRAR");
 		boton_aceptar.setBounds(200, 100, 200, 20);
 		ActionListener aceptar = new ActionListener() {

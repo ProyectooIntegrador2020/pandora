@@ -56,11 +56,12 @@ public class Ventana_asignar_alumnos_profesor {
 		titulo.setBounds(85, 11, 500, 44);
 		p.add(titulo);
 	
+		//Va a sacar el mensaje para comprobar lo que ha hecho el boton
 		JLabel listo = new JLabel();
 		listo.setBounds(270, 200, 200, 20);
 		p.add(listo);
 		
-		//Boton que va a dar de baja al alumno que hayamos creado
+		//Boton que va a asignar los alumnos a los profesores
 		JButton boton_aceptar = new JButton("Asignar alumnos");
 		boton_aceptar.setBounds(200, 100, 200, 20);
 		ActionListener aceptar = new ActionListener() {
@@ -69,6 +70,12 @@ public class Ventana_asignar_alumnos_profesor {
 			public void actionPerformed(ActionEvent e) {
 				if(Recepcionista.asignar_alumno_profesor(a)) {
 					listo.setText("HECHO!");
+				}
+				else {
+					//Como la frase es más larga, se modifica dónde empieza el texto para que
+					//este mensaje salga en el centro
+					listo.setBounds(210, 200, 200, 20);
+					listo.setText("NO SE HA MODIFICADO NADA :(");;
 				}
 			}
 		};

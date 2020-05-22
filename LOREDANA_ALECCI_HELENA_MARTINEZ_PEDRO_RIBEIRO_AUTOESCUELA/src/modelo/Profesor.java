@@ -22,6 +22,13 @@ public class Profesor extends Persona {
 		this.coche = new Coches(coche);
 	}
 	
+	public Profesor(Profesor e) {
+		super(e);
+		// TODO Auto-generated constructor stub
+		this.lista_alumnos_prac = e.getLista_alumnos_prac();
+		this.coche = e.getCoche();
+	}
+	
 	public HashSet<Alumnos> getLista_alumnos_prac() {
 		return lista_alumnos_prac;
 	}

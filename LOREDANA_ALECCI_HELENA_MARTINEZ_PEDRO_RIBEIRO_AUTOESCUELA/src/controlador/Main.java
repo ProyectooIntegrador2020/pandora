@@ -148,7 +148,7 @@ public class Main {
 			e.getStackTrace();
 		}
 		
-		//Interfaz_principal.ventana_principal(nochoques);
+		Interfaz_principal.ventana_principal(nochoques);
 		
 	}
 
