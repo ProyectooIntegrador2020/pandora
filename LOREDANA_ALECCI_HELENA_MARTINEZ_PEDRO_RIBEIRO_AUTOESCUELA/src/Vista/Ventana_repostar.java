@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -69,7 +71,6 @@ public class Ventana_repostar {
 		p.add(escrito_matricula_coche);
 		
 		JLabel fallo = new JLabel();
-		fallo.setBounds(220, 280, 300, 20);
 		p.add(fallo);
 		
 		JButton boton_aceptar = new JButton("ACEPTAR");
@@ -83,10 +84,12 @@ public class Ventana_repostar {
 				matricula = escrito_matricula_coche.getText();
 				Coches c = null;
 				if((c=buscar_coche(matricula, a))!=null) {
-					boton_aceptar.setBounds(150, 250, 200, 20);
 					c.repostar(a);
+					fallo.setBounds(260, 280, 300, 20);
+					fallo.setText("REPOSTADO");
 				}
 				else {
+					fallo.setBounds(220, 280, 300, 20);
 					fallo.setText("EL COCHE NO EXISTE");
 				}
 				
@@ -103,9 +106,10 @@ public class Ventana_repostar {
 	//Vamos a buscar al profesor porque sino no se puede llamar al método
 	public Coches buscar_coche(String matricula, Autoescuela a) {
 		Coches c = null;
-		for(Coches p: a.getLista_vehiculos()) {
-			if(p.getMatricula().equalsIgnoreCase(matricula)) {
-				c = new Coches(p);
+		for(Iterator<Coches> it = a.getLista_vehiculos().iterator(); it.hasNext();) {
+			c=it.next();
+			if(c.getMatricula().equalsIgnoreCase(matricula)) {
+				c = new Coches();
 			}
 		}
 		return c;

@@ -28,7 +28,7 @@ public class Interfaz_principal {
 	 */
 	public static void ventana_principal(Autoescuela a) {
 		JFrame ventana = new JFrame();
-		ventana.setSize(600, 600);
+		ventana.setSize(600, 500);
 		//La ventana se va a cerrar completamente y también todas las demás ventanas
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel p = new JPanel();
@@ -265,7 +265,7 @@ public class Interfaz_principal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-				Ventana_lista_alumnos vent = new Ventana_lista_alumnos(a);
+				//Ventana_lista_alumnos vent = new Ventana_lista_alumnos(a);
 				}
 				catch (Exception b) {
 					b.printStackTrace();
@@ -280,25 +280,16 @@ public class Interfaz_principal {
 		boton_lista_vehiculos.setBounds(60, 318, 195, 23);
 		p.add(boton_lista_vehiculos);
 		
-		JButton boton_lista_espera = new JButton("LISTA ALUMNOS ESPERA");
-		boton_lista_espera.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_lista_espera.setBounds(60, 352, 195, 23);
-		p.add(boton_lista_espera);
-		
-		JButton boton_lista_alumnos_profesor = new JButton("ALUMNOS DE UN PROFESOR");
-		boton_lista_alumnos_profesor.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_lista_alumnos_profesor.setBounds(60, 388, 195, 23);
-		p.add(boton_lista_alumnos_profesor);
-		
-		/*JButton boton_datos_persona = new JButton("DATOS PERSONA");
+		JButton boton_datos_persona = new JButton("DATOS PERSONA");
 		boton_datos_persona.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_datos_persona.setBounds(373, 250, 133, 23);
+		boton_datos_persona.setBounds(60, 354, 133, 23);
 		p.add(boton_datos_persona);
 		
 		JButton boton_datos_coche = new JButton("DATOS COCHE");
 		boton_datos_coche.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_datos_coche.setBounds(374, 285, 133, 23);
-		p.add(boton_datos_coche);*/
+		boton_datos_coche.setBounds(60, 388, 133, 23);
+		p.add(boton_datos_coche);
+		
 
 		//Coloca la ventana en el centro nada más abrirse
 		ventana.setLocationRelativeTo(null);
