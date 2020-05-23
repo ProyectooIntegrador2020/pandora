@@ -42,8 +42,6 @@ public class RecepcionistaTest {
 		Coches aux;
 		
 		a1 = new Alumnos("05279864T", 21, "Helena", 644321387, tipoMatricula.basico);
-		a2 = new Alumnos("11223344V", 21, "Alvaro", 673874987, tipoMatricula.intermedio);
-		a3 = new Alumnos("99887766J", 34, "Min Yoongi", 632876198, tipoMatricula.completo);
 		
 		coche1 = new Coches("JYX2345");
 		coche2 = new Coches("HMD9876");
@@ -62,6 +60,12 @@ public class RecepcionistaTest {
 		Recepcionista.alta(pr3, nochoques);
 		
 		Recepcionista.alta(a1, nochoques);
+		
+		Recepcionista.cobros(nochoques);
+		
+		a2 = new Alumnos("11223344V", 21, "Alvaro", 673874987, tipoMatricula.intermedio);
+		a3 = new Alumnos("99887766J", 34, "Min Yoongi", 632876198, tipoMatricula.completo);
+		
 		Recepcionista.alta(a2, nochoques);
 		Recepcionista.alta(a3, nochoques);
 		
@@ -119,12 +123,7 @@ public class RecepcionistaTest {
 
 	@Test
 	public void testCobros() {
-		assertEquals(1400, Recepcionista.cobros(nochoques), 0.10);
-	}
-
-	@Test
-	public void testPagos_arreglos() {
-		fail("Not yet implemented");
+		assertEquals(1313.5, Recepcionista.cobros(nochoques), 0.10);
 	}
 
 	@Test

@@ -105,7 +105,7 @@ public class Ventana_repostar {
 		Coches c = null;
 		for(Coches p: a.getLista_vehiculos()) {
 			if(p.getMatricula().equalsIgnoreCase(matricula)) {
-				c = new Coches(c);
+				c = new Coches(p);
 			}
 		}
 		return c;
