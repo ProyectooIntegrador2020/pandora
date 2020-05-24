@@ -418,6 +418,7 @@ public class Recepcionista implements tipos_matricula_examen {
 					}
 				// Se le elimina de la lista general de la autoescuela.
 				it.remove();
+				retorno = true;
 			}
 		}
 		return retorno;

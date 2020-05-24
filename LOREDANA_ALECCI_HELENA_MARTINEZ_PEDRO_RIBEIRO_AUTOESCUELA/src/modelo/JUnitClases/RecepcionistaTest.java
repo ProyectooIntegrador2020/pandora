@@ -14,6 +14,7 @@ import modelo.Autoescuela;
 import modelo.Coches;
 import modelo.Profesor;
 import modelo.Recepcionista;
+import modelo.tipos_matricula_examen.tipoExamen;
 import modelo.tipos_matricula_examen.tipoMatricula;
 
 public class RecepcionistaTest {
@@ -33,13 +34,16 @@ public class RecepcionistaTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		//Creo una autoescuela para realizar pruebas.
 		nochoques = new Autoescuela();
+		//Una autoescuela nula para generar excepciones.
 		nulo = null;
+		//Un hashset listo por si quiero usarlo de comparación con otro.
 		esperado = new HashSet<Alumnos>();
 		
-		Iterator<Coches> it;
+		/*Iterator<Coches> it;
 		
-		Coches aux;
+		Coches aux;*/
 		
 		a1 = new Alumnos("05279864T", 21, "Helena", 644321387, tipoMatricula.basico);
 		
@@ -69,11 +73,16 @@ public class RecepcionistaTest {
 		Recepcionista.alta(a2, nochoques);
 		Recepcionista.alta(a3, nochoques);
 		
+		//Gasto las clases al alumno 1 para que se resetee su estado de pago y poder calcular bien el resultado esperado
+		// de los cobros, a la vez qye consigo probar que los gastos se restan.
 		pr1.getLista_alumnos_prac().add(a1);
 		pr1.imparte_clase(nochoques, 5, "05279864T");
 		pr1.imparte_clase(nochoques, 30, "05279864T");
 		
+		//Creo un gasto para probar el pago_arreglos.
 		pr1.getCoche().repostar(nochoques);
+		
+		
 	}
 
 	@Test (expected = java.lang.NullPointerException.class)
@@ -128,7 +137,18 @@ public class RecepcionistaTest {
 
 	@Test
 	public void testAsignar_alumno_profesor() {
-		fail("Not yet implemented");
+		//Cambio manualmente el estado del examen de los alumnos y los añado a la lista de espera.
+		a2.setExamen(tipoExamen.practico);
+		a3.setExamen(tipoExamen.practico);
+		nochoques.getLista_alum_espera().add(a2);
+		nochoques.getLista_alum_espera().add(a3);
+		assertTrue(Recepcionista.asignar_alumno_profesor(nochoques));
+		
+		//Devuelvo la autoescuela al estado anterior.
+		/*pr1.getLista_alumnos_prac().remove(a2);
+		pr1.getLista_alumnos_prac().remove(a3);
+		a2.setExamen(tipoExamen.teorico);
+		a3.setExamen(tipoExamen.teorico);*/
 	}
 
 	@Test
@@ -150,15 +170,15 @@ public class RecepcionistaTest {
 	public void testDar_de_baja_colectiva() {
 		fail("Not yet implemented");
 	}
-
+	
 	@Test
-	public void testDar_de_baja_individual() {
+	public void testReubicarAlumnosEnPrac() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testReubicarAlumnosEnPrac() {
-		fail("Not yet implemented");
+	public void testDar_de_baja_individual() {
+		assertTrue(Recepcionista.dar_de_baja_individual("05279864T", nochoques));
 	}
 
 	@Test
