@@ -42,20 +42,6 @@ public class Coches {
 	}
 	
 	/**
-	 * Constructor sin parámetros 
-	 */
-	public Coches() {
-		this.matricula = this.getMatricula();
-		if (this.getLista_arreglos().size() > 0)
-			this.lista_arreglos = this.getLista_arreglos();
-		else
-			this.lista_arreglos = new HashSet<Arreglo>();
-		this.litros_gasolina = this.getLitros_gasolina();
-		this.precio_gasolina = this.getPrecio_gasolina();
-		this.gasolina_max = this.getGasolina_max();
-	}
-	
-	/**
 	 * Método que le añade los litros de gasolina necesarios al coche cuando éste se quede vacío. También almacena el
 	 * precio de la gasolina usada.
 	 * @param Autoescuela Autoescuela donde se va a actualizar el estado del vehiculo.

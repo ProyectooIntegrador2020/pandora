@@ -85,7 +85,7 @@ public class Ventana_repostar {
 				Coches c = null;
 				if((c=buscar_coche(matricula, a))!=null) {
 					c.repostar(a);
-					fallo.setBounds(260, 280, 300, 20);
+					fallo.setBounds(250, 280, 300, 20);
 					fallo.setText("REPOSTADO");
 				}
 				else {
@@ -106,10 +106,9 @@ public class Ventana_repostar {
 	//Vamos a buscar al profesor porque sino no se puede llamar al método
 	public Coches buscar_coche(String matricula, Autoescuela a) {
 		Coches c = null;
-		for(Iterator<Coches> it = a.getLista_vehiculos().iterator(); it.hasNext();) {
-			c=it.next();
-			if(c.getMatricula().equalsIgnoreCase(matricula)) {
-				c = new Coches();
+		for(Coches p: a.getLista_vehiculos()) {
+			if(p.getMatricula().equals(matricula)) {
+				c=new Coches(p);
 			}
 		}
 		return c;
