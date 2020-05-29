@@ -2,8 +2,10 @@ package controlador;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ConcurrentModificationException;
 
+import DAO.BBDD;
 import Vista.Interfaz_principal;
 import modelo.Alumnos;
 import modelo.Autoescuela;
@@ -12,6 +14,12 @@ import modelo.Profesor;
 import modelo.Recepcionista;
 import modelo.tipos_matricula_examen.tipoMatricula;
 
+/**
+ * Clase desde donde se va a inciar la interfaz de la aplicación.
+ * @author Helena Martinez
+ * @author Loredana Alecci
+ * @author Pedro Ribeiro
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -29,15 +37,18 @@ public class Main {
 		
 		//Alumnos a1 = new Alumnos("aa", 22, "PP", 45, tipoMatricula.basico);
 		
-		Recepcionista.alta(coche1, nochoques);
-		Recepcionista.alta(coche2, nochoques);
-		Recepcionista.alta(coche3, nochoques);
-		
-		Recepcionista.alta(pr1, nochoques);
-		Recepcionista.alta(pr2, nochoques);
-		Recepcionista.alta(pr3, nochoques);
-		
 		try {
+			
+			BBDD.conectar();
+			
+			Recepcionista.alta(coche1, nochoques);
+			Recepcionista.alta(coche2, nochoques);
+			Recepcionista.alta(coche3, nochoques);
+			
+			Recepcionista.alta(pr1, nochoques);
+			Recepcionista.alta(pr2, nochoques);
+			Recepcionista.alta(pr3, nochoques);
+			
 			Recepcionista.alumnosBase(nochoques);
 			
 			//Recepcionista.alta(a1, nochoques);
@@ -133,6 +144,8 @@ public class Main {
 			System.out.format("%s\n", "INFO AUTOESCUELA");
 			System.out.format("%s\n", nochoques.toString());
 			
+			BBDD.cerrar();
+			
 		} catch (FileNotFoundException fnfe) {
 			System.out.format("%s\n", "El archivo no fue encontrado.");
 		} catch (NullPointerException npe) {
@@ -143,12 +156,17 @@ public class Main {
 			System.out.format("%s\n", "Hubo un problema manejando ficheros.");
 		} catch (IllegalArgumentException iae) {
 			System.out.format("%s\n", "Has intentado introducir un dato no válido.");
+		} catch (ClassNotFoundException e) {
+			System.out.format("%s\n", "No se encontró la clase a la que intentas acceder.");
+		} catch (SQLException sqle) {
+			System.out.format("%s\n", "Se produjo un error intentando conectar a la base de datos.");
+			sqle.getStackTrace();
 		} catch (Exception e) {
 			System.out.format("%s\n", "Se produjo un error.");
 			e.getStackTrace();
 		}
 		
-		Interfaz_principal.ventana_principal(nochoques);
+		//Interfaz_principal.ventana_principal(nochoques);
 		
 	}
 

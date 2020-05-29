@@ -2,6 +2,7 @@ package modelo.JUnitClases;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -30,7 +31,7 @@ public class RestarGasolinaTest {
 	private static int numClases;
 	private static float result;
 	
-	public RestarGasolinaTest(int num, float res) {
+	public RestarGasolinaTest(int num, float res) throws SQLException {
 		this.numClases = num;
 		this.result = res;
 		this.auto = new Autoescuela();

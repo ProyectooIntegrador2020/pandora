@@ -15,12 +15,31 @@ import java.util.Random;
  */
 public class Autoescuela implements tipos_matricula_examen {
 	
+	/**
+	 * Atributo que almacena los profesores que están actualmente dados de alta en la autoescuela.
+	 */
 	private HashSet<Profesor> lista_profesores;
+	/**
+	 * Atributo que almacena el total de alumnos matriculados en la autoescuela.
+	 */
 	private HashSet<Alumnos> lista_alumnos;
+	/**
+	 * Atributo que almacena los coches de los que dispone la autoescuela.
+	 */
 	private HashSet<Coches> lista_vehiculos;
+	/**
+	 * Lista de espera que almacena los alumnos que aún no han sido asignados a un profesor. Todo aquel que esté en esta
+	 * lista deberá tener pendiente el examen práctico.
+	 */
 	private LinkedHashSet<Alumnos> lista_alum_espera;
+	/**
+	 * Beneficios de la autoescuela tras haber pagado a los profesores.
+	 */
 	private float beneficios;
 	
+	/**
+	 * Constructor principal de la autoescuela.
+	 */
 	public Autoescuela() {
 		this.lista_profesores = new HashSet<Profesor>();
 		this.lista_alumnos = new HashSet<Alumnos>();
@@ -32,7 +51,7 @@ public class Autoescuela implements tipos_matricula_examen {
 	/**
 	 * Método encargado de repartir el beneficio a los trabajadores, y en caso de que sobre se almacena para el mes
 	 * siguiente.
-	 * @param Cobros finales a repartir entre profesores.
+	 * @param cobros float con los cobros finales a repartir entre profesores.
 	 */
 	public void pago_personal(float cobros) {
 		//Dinero a repartir este mes es los cobros recientes más los beneficios acumulados.
@@ -64,7 +83,7 @@ public class Autoescuela implements tipos_matricula_examen {
 	
 	/**
 	 * Método sobrecargado que filtra los alumnos por el tipo de examen que tienen pendiente.
-	 * @param tipoExamen opción enum por la que quieres seleccionar.
+	 * @param tipo tipoExamen con opción enum por la que quieres seleccionar.
 	 * @return listaAlumnos Un ArrayList de Alumnos solo con un tipo de examen.
 	 * @see <a href="https://www.w3schools.com/java/java_arraylist.asp">ArrayList de Java</a>
 	 */
@@ -83,8 +102,8 @@ public class Autoescuela implements tipos_matricula_examen {
 	
 	/**
 	 * Método que recibe una lista de alumnos elegibles para ser aprobados y genera un número aleatorio de aprobados.
-	 * @param tipoExamen filtro para crear una lista de alumnos elegibles.
-	 * @return alumnos ArrayList de alumnos aprobados.
+	 * @param tipo tipoExamen filtro para crear una lista de alumnos elegibles.
+	 * @return ArrayList de alumnos aprobados.
 	 * @see <a href="https://www.w3schools.com/java/java_arraylist.asp">ArrayList de Java</a>
 	 */
 	public ArrayList<Alumnos> recibirAprobados(tipoExamen tipo) {
@@ -165,7 +184,7 @@ public class Autoescuela implements tipos_matricula_examen {
 	
 	/**
 	 * Método que muestra la info de un alumno, un profesor o un coche en particular.
-	 * @param ID Dni o matrícula de coche.
+	 * @param id Dni o matrícula de coche.
 	 * @return Información del elemento requerido o un mensaje de error si no hay coincidencias.
 	 */
 	public String mostrarInfoIndividual(String id) {

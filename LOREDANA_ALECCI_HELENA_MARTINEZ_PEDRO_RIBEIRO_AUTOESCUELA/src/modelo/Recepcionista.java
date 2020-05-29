@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import DAO.BBDD;
 import modelo.tipos_matricula_examen.tipoMatricula;
 
 /**
@@ -25,11 +27,13 @@ public class Recepcionista implements tipos_matricula_examen {
 	/**
 	 * Método que matricula unos alumnos por defecto al iniciar la aplicación cogiendo los datos de un fichero de
 	 * texto.
-	 * @param Autoescuela donde se van a matricular.
+	 * @param a Autoescuela donde se van a matricular.
 	 * @throws FileNotFoundException Si no se encuentra el fichero a leer
 	 * @throws IOException Si se produce algún otro error manejando el fichero.
+	 * @throws SQLException 
+	 * @throws NumberFormatException 
 	 */
-	public static void alumnosBase(Autoescuela a) throws FileNotFoundException, IOException {
+	public static void alumnosBase(Autoescuela a) throws FileNotFoundException, IOException, NumberFormatException, SQLException {
 		File alumnos = new File("alumnosIniciales.txt");
 		FileReader fr = new FileReader(alumnos);
 		BufferedReader bfr = new BufferedReader(fr);
@@ -45,6 +49,7 @@ public class Recepcionista implements tipos_matricula_examen {
 			splits = Arrays.asList(leido.split(","));
 			//Damos de alta el alumno creando cada alumno directamente en los parametros del metodo.
 			alta(new Alumnos(splits.get(0), Integer.parseInt(splits.get(1)), splits.get(2), Integer.parseInt(splits.get(3)), asignar_matricula(Integer.parseInt(splits.get(4)))), a);
+			//BBDD.insertarAlumns(splits.get(0), Integer.parseInt(splits.get(1)), splits.get(2), Integer.parseInt(splits.get(3)), Integer.parseInt(splits.get(4)));
 		}
 		
 		bfr.close();
@@ -53,8 +58,8 @@ public class Recepcionista implements tipos_matricula_examen {
 	
 	/**
 	 * Método que asigna un tipo de matrícula según un numero.
-	 * @param numero que indica que tipo de matricula asignamos.
-	 * @return opción del tipo enum "tipoMatricula".
+	 * @param numero int que indica que tipo de matricula asignamos.
+	 * @return tipoMatricula del tipo enum "tipoMatricula".
 	 */
 	public static tipoMatricula asignar_matricula(int numero) {
 		tipoMatricula tm = null;
@@ -75,32 +80,59 @@ public class Recepcionista implements tipos_matricula_examen {
 	}
 	
 	/**
-	 * Método que da de alta a una persona (puede ser alumno, trabajador o recepcionista).
-	 * @param persona Persona que se va a dar de alta. Es un objeto de tipo Persona.
-	 * @param Autoescuela Autoescuela donde se va a dar de alta.
+	 * Método que devuelve el numero correspondiente al tipo de matricula con el fin de usarlo para la BBDD.
+	 * @param tipo opción enum de tipoMatricula.
+	 * @return int que equivale a la opción del tipo de matricula.
 	 */
-	public static void alta(Persona p, Autoescuela a) {
+	public static int enumAint(tipoMatricula tipo) {
+		switch (tipo) {
+			case basico:
+				return 1;
+			case intermedio:
+				return 2;
+			case completo:
+				return 3;
+			default:
+				return 1;
+		}
+	}
+	
+	/**
+	 * Método que da de alta a una persona (puede ser alumno, trabajador o recepcionista).
+	 * @param p Persona que se va a dar de alta. Es un objeto de tipo Persona.
+	 * @param a Autoescuela donde se va a dar de alta.
+	 * @throws SQLException 
+	 */
+	public static void alta(Persona p, Autoescuela a) throws SQLException {
 		//Chequea si la persona a dar de alta es profesor o alumno y lo añade a los HashList de la autoescuela.
-		if (p instanceof Alumnos)
-			a.getLista_alumnos().add((Alumnos)p);
-		else if (p instanceof Profesor)
-			a.getLista_profesores().add((Profesor)p);
+		if (p instanceof Alumnos) {
+			Alumnos al = (Alumnos)p;
+			a.getLista_alumnos().add(al);
+			//BBDD.insertarAlumns(al.getDni(), al.getEdad(), al.getNombre(), al.getNum_tel(), enumAint(al.getMatricula_pagos()));
+		}
+		else if (p instanceof Profesor) {
+			Profesor prf = (Profesor)p;
+			a.getLista_profesores().add(prf);
+			//BBDD.insertarProfe(prf.getDni(), prf.getCoche().getMatricula(), prf.getEdad(), prf.getNombre(), prf.getNum_tel());
+		}
 	}
 	
 	/**
 	 * Método que da de alta un coche en la autoescuela.
-	 * @param coche Coche que se va a dar de alta. Es un objeto de tipo Coche.
-	 * @param Autoescuela Autoescuela donde se va a dar de alta.
+	 * @param c Coche que se va a dar de alta. Es un objeto de tipo Coche.
+	 * @param a Autoescuela donde se va a dar de alta.
+	 * @throws SQLException 
 	 */
-	public static void alta(Coches c, Autoescuela a) {
+	public static void alta(Coches c, Autoescuela a) throws SQLException {
 		//Chequea si la persona a dar de alta es profesor o alumno y lo añade a los HashList de la autoescuela.
 		a.getLista_vehiculos().add(c);
+		//BBDD.insertarCoche(c.getMatricula());
 	}
 	
 	/**
 	 * Método que cobra a todos los alumnos pendientes de cobro.
-	 * @param Autoescuela La autoescuela que contiene los alumnos.
-	 * @return true si ha cobrado satisfactoriamente, false si ha ocurrido algún problema.
+	 * @param auto La autoescuela que contiene los alumnos.
+	 * @return beneficios float con los cobros después de haberle quitado los gastos de arreglos y gasolina
 	 */
 	public static float cobros(Autoescuela auto) {
 		ArrayList<Alumnos> sinPagar = new ArrayList<Alumnos>();
@@ -143,8 +175,8 @@ public class Recepcionista implements tipos_matricula_examen {
 	/**
 	 * Método que calcula los gastos totales y se los resta al dinero recaudado de los cobros.
 	 * @param cobros Dinero cobrado previamente de los alumnos de la autoescuela.
-	 * @param Autoescuela Autoescuela que se está gestionando.
-	 * @return beneficio de la autoescuela.
+	 * @param a Autoescuela que se está gestionando.
+	 * @return beneficios flaot con los beneficios de la autoescuela.
 	 */
 	public static float pagos_arreglos(float cobros, Autoescuela a) {
 		float pagos = 0;
@@ -175,7 +207,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	
 	/**
 	 * Método que asigna alumnos previamente en lista de espera a un profesor.
-	 * @param Autoescuela Autoescuela donde están las listas de profesores.
+	 * @param a Autoescuela donde están las listas de profesores.
 	 * @return true si se ha podido asignar, false si no se ha podido asignar.
 	 */
 	public static boolean asignar_alumno_profesor(Autoescuela a) {
@@ -307,7 +339,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	
 	/**
 	 * Método que comprueba cuántos alumnos han aprobado y da de baja a aquellos que lo han hecho.
-	 * @param alumnos_totales Lista total de los alumnos matriculados en la autoescuela.
+	 * @param auto Autoescuela de donde se saca la info de los aprobados.
 	 * @return true si se han dado de baja correctamente, false si ha habido algún error.
 	 */
 	public static boolean dar_de_baja_colectiva(Autoescuela auto) {
@@ -330,7 +362,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	/**
 	 * Método que da de baja a una persona en individual, pudiendo elegir si profesor o alumno.
 	 * @param dni String con el dni de la persona a dar de baja
-	 * @param autoescuela Autoescuela que estamos gestionando
+	 * @param auto Autoescuela que estamos gestionando
  	 * @return true si se ha dado de baja correctamente, false si ocurrió algun problema.
 	 */
 	public static boolean dar_de_baja_individual(String dni, Autoescuela auto) {
@@ -349,10 +381,10 @@ public class Recepcionista implements tipos_matricula_examen {
 		//Si no hay coincidencias con un alumno, debe ser un profesor. Se recorre la lista de profesores con un iterator
 		// Porque si no no se podria borrar un elemento de una lista que se está recorriendo.
 		while (it.hasNext()) {
-			aux = it.next();
+			aux = new Profesor(it.next());
 			if (aux.getDni().equalsIgnoreCase(dni)) {
-				reubicarAlumnosEnPrac(aux, auto);
 				it.remove();
+				reubicarAlumnosEnPrac(aux, auto);
 				return true;
 			}
 		}
@@ -362,7 +394,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	/**
 	 * Método que reparte los alumnos de un profesor entre el resto de profesores.
 	 * @param profe Profesor a ser borrado
-	 * @param Autoescuela Autoescuela gestionada.
+	 * @param auto Autoescuela gestionada.
 	 */
 	public static void reubicarAlumnosEnPrac(Profesor profe, Autoescuela auto) {
 		Iterator<Alumnos> it = profe.getLista_alumnos_prac().iterator();
@@ -394,7 +426,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Metodo que da de baja a un alumno individual.
 	 * @param dni Dni del alumno a dar de baja
 	 * @param auto Autoescuela del alumno
-	 * @return True si se ha dado de baja correctamente, false si ocurrio algun problema.
+	 * @return true si se ha dado de baja correctamente, false si ocurrio algun problema.
 	 */
 	public static boolean dar_de_baja_individual_alumno(String dni, Autoescuela auto) {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
@@ -428,12 +460,12 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Metodo que elimina un alumno de su profesor asignado.
 	 * @param auto Autoescuela del alumno
 	 * @param alum Alumno a borrar
-	 * @return True si se ha encontrado y borrado al alumno, False si no existe ese alumno en ningun profesor.
+	 * @return true si se ha encontrado y borrado al alumno, False si no existe ese alumno en ningun profesor.
 	 */
 	public static boolean eliminaAlumnoDeProfe(Autoescuela auto, Alumnos alum) {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
-		Iterator<Alumnos> it = null;
-		boolean hecho = false;
+		//Iterator<Alumnos> it = null;
+		//boolean hecho = false;
 		//Se recorre la lista de profesores de la autoescuela
 		for (Profesor p: auto.getLista_profesores()) {
 			//Si contiene al alumno lo borra.

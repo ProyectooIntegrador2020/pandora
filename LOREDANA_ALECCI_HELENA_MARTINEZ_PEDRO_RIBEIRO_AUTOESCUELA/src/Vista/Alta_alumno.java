@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,7 +35,7 @@ public class Alta_alumno {
 	
 	/**
 	 * Método que se encarga de crear y hacer visible la interfaz
-	 * @param Autoescuela
+	 * @param a Autoescuela
 	 */
 	private void pinta(Autoescuela a) {
 		ventana2 = new JFrame();
@@ -123,7 +124,12 @@ public class Alta_alumno {
 				num = Integer.parseInt(escrito_tel.getText());
 				numero_matricula=Integer.parseInt(escrito_num_matricula.getText());
 				Alumnos alumno = new Alumnos(dni_alumno, edad_alumno, nombre_alumno, num, Recepcionista.asignar_matricula(numero_matricula));
-				Recepcionista.alta(alumno, a);
+				try {
+					Recepcionista.alta(alumno, a);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				//Borramos todo
 				escrito_nombre.setText(null);
 				escrito_dni.setText(null);
@@ -139,11 +145,6 @@ public class Alta_alumno {
 		ventana2.setVisible(true);
 	}
 	
-	/**
-	 * Método que va a asignar el tipo de matrícula
-	 * @param numero para identificar el tipo de matrícula
-	 * @return el tipo de matrícula
-	 */
 	/*public tipoMatricula asignar_matricula(int numero) {
 		tipoMatricula tm = null;
 		switch (numero) {

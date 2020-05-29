@@ -15,6 +15,13 @@ import javax.swing.JTextField;
 import modelo.Autoescuela;
 import modelo.Recepcionista;
 
+/**
+ * Esta clase es una interfaz que va a mostrar la lista de alumnos de la autoescuela.
+ * 
+ * @author Loredana Alecci
+ * @author Helena Martinez
+ * @author Pedro Ribeiro
+ */
 public class Ventana_lista_alumnos {
 
 	JFrame ventana2;
@@ -26,7 +33,7 @@ public class Ventana_lista_alumnos {
 	
 	/**
 	 * Método que se encarga de crear y hacer visible la interfaz
-	 * @param Autoescuela
+	 * @param a Autoescuela
 	 */
 	private void pinta(Autoescuela a) {
 		ventana2 = new JFrame();

@@ -35,7 +35,7 @@ public class Ventana_impartir_clase {
 	
 	/**
 	 * Método que se encarga de crear y hacer visible la interfaz
-	 * @param Autoescuela
+	 * @param a Autoescuela
 	 */
 	private void pinta(Autoescuela a) {
 		ventana3 = new JFrame();
@@ -119,6 +119,12 @@ public class Ventana_impartir_clase {
 	}
 	
 	//Vamos a buscar al profesor porque sino no se puede llamar al método
+	/**
+	 * Método que recupera el objeto de tipo Profesor para ser usado en la interfaz.
+	 * @param dni_prof DNI del profesor a buscar
+	 * @param a Autoescuela que se está gestionando
+	 * @return Profesor objeto profesor que corresponde a ese dni.
+	 */
 	public Profesor buscar_profesor(String dni_prof, Autoescuela a) {
 		Profesor profe = null;
 		for(Profesor p: a.getLista_profesores()) {

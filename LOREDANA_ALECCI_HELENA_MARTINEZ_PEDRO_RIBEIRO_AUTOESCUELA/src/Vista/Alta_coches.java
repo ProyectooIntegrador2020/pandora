@@ -36,7 +36,7 @@ public class Alta_coches {
 		
 		/**
 		 * Método que se encarga de crear y hacer visible la interfaz
-		 * @param Autoescuela
+		 * @param a Autoescuela
 		 */
 		private void pinta(Autoescuela a) {
 			ventana2 = new JFrame();

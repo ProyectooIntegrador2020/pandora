@@ -39,7 +39,7 @@ public class Ventana_repostar {
 	
 	/**
 	 * Método que se encarga de crear y hacer visible la interfaz
-	 * @param Autoescuela
+	 * @param a Autoescuela
 	 */
 	private void pinta(Autoescuela a) {
 		ventana3 = new JFrame();
@@ -104,6 +104,12 @@ public class Ventana_repostar {
 	}
 	
 	//Vamos a buscar al profesor porque sino no se puede llamar al método
+	/**
+	 * Método que busca recupera el objeto del coche que buscamos para usarlo en la interfaz.
+	 * @param matricula String con la matricula del coche que buscamos.
+	 * @param a Autoescuela que se está gestionando
+	 * @return Coches un objeto de tipo Coche
+	 */
 	public Coches buscar_coche(String matricula, Autoescuela a) {
 		Coches c = null;
 		for(Coches p: a.getLista_vehiculos()) {

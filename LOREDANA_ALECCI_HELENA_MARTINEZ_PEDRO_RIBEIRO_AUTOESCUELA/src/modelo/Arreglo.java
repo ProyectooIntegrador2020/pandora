@@ -12,6 +12,11 @@ public class Arreglo {
 	private String nombre;
 	private float precio;
 	
+	/**
+	 * Constructor principal de la clase Arreglo
+	 * @param nombre String con el nombre del arreglo
+	 * @param precio float con el precio del arreglo.
+	 */
 	public Arreglo(String nombre, float precio) {
 		this.nombre = nombre;
 		this.precio = precio;

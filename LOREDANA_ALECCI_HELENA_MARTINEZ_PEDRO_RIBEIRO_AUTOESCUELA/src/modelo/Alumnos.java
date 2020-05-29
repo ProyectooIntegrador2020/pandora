@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.Iterator;
+
 /**
  * Clase que almacena la información específica de cada alumno de la Autoescuela.
  * @author Helena Martínez
@@ -13,6 +15,15 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 	private boolean pagado;
 	private int clases_por_dar;
 
+	/**
+	 * Constructor principal de la clase Alumnos.
+	 * @param dni String con el DNI del alumno.
+	 * @param edad int con la edad del alumno
+	 * @param nombre String con el nombre del alumno
+	 * @param num int con el número de teléfono del alumno
+	 * @param matricula enum tipoMatricula matrícula que elige el alumno
+	 * @see <a href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html">Enums de Java</a>
+	 */
 	public Alumnos(String dni, int edad, String nombre, int num, tipoMatricula matricula) {
 		super(dni, edad, nombre, num);
 		this.matricula_pagos = matricula;
@@ -21,6 +32,10 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 		this.clases_por_dar = 0;
 	}
 	
+	/**
+	 * Constructor de copia de la clase Alumnos.
+	 * @param a un objeto tipo Alumnos del que se copiará la información.
+	 */
 	public Alumnos(Alumnos a) {
 		super(a);
 		this.matricula_pagos = a.getMatricula_pagos();
@@ -31,7 +46,7 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 	
 	/**
 	 * Método que resta clases pendientes al alumno.
-	 * @param numClases a restar.
+	 * @param numClases int Número de clases a restar.
 	 * @return true si se han restado clases, false si su numero pendiente de clases es 0.
 	 */
 	public boolean restarClases(int numClases) {

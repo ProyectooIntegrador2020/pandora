@@ -12,9 +12,23 @@ import java.util.HashSet;
  */
 public class Profesor extends Persona {
 	
+	/**
+	 * Lista de alumnos que tiene asignado el profesor.
+	 */
 	private HashSet<Alumnos> lista_alumnos_prac;
+	/**
+	 * Coche que usa el profesor para dar clases.
+	 */
 	private Coches coche;
 
+	/**
+	 * Cosntructor principal para crear un objeto de tipo Profesor.
+	 * @param dni String con el DNI del profesor.
+	 * @param edad int con la edad del profesor
+	 * @param nombre String con el nombre del profesor
+	 * @param num int con el número de teléfono del profesor
+	 * @param coche un objeto de tipo Coches que es el que va a usar el profesor.
+	 */
 	public Profesor(String dni, int edad, String nombre, int num, Coches coche) {
 		super(dni, edad, nombre, num);
 		// TODO Auto-generated constructor stub
@@ -22,6 +36,10 @@ public class Profesor extends Persona {
 		this.coche = new Coches(coche);
 	}
 	
+	/**
+	 * Constructor de copia de la clase Profesor.
+	 * @param e un objeto tipo Profesor del que se copiará la información.
+	 */
 	public Profesor(Profesor e) {
 		super(e);
 		// TODO Auto-generated constructor stub
@@ -52,9 +70,10 @@ public class Profesor extends Persona {
 	
 	/**
 	 * Método que añade un numero de clases impartidas al alumnno correspondiente y anota cuanta gasolina ha gastado.
-	 * @param numClases Número de clases que ha impartido.
-	 * @param Dni dni del alumno al que ha impartido clases.
-	 * @param Autoescuela que se está gestionando
+	 * @param auto Autoescuela que se está gestionando
+	 * @param numClases int Número de clases que ha impartido.
+	 * @param dni String dni del alumno al que ha impartido clases.
+	 * @return String con el resultado de la operación.
 	 */
 	public String imparte_clase(Autoescuela auto, int numClases, String dni) {
 		
@@ -89,7 +108,7 @@ public class Profesor extends Persona {
 	/**
 	 * Método que resta la gasolina de forma proporcional a las clases impartidas.
 	 * @param numClases Número de clases dadas.
-	 * @param Autoescuela que se está gestionando
+	 * @param auto Autoescuela que se está gestionando
 	 */
 	public void restarGasolina(int numClases, Autoescuela auto) {
 		//Si se encontró se gastará unos litros de gasolina proporcionales al numero de clases impartidas.
@@ -105,9 +124,9 @@ public class Profesor extends Persona {
 	
 	/**
 	 * Método que permite añadir un arreglo necesario al coche asignado del profesor.
-	 * @param Nombre del arreglo
-	 * @param Precio del arreglo
-	 * @param Autoescuela que se está gestionando
+	 * @param nombre Nombre del arreglo
+	 * @param precio Precio del arreglo
+	 * @param auto Autoescuela que se está gestionando
 	 */
 	public void necesidad_arreglo(String nombre, float precio, Autoescuela auto) {
 		coche.getLista_arreglos().add(new Arreglo(nombre, precio));
@@ -116,7 +135,7 @@ public class Profesor extends Persona {
 	
 	/**
 	 * Método que muestra los alumnos que tiene asignado el profesor
-	 * @return Informacion de los alumnos.
+	 * @return String Informacion de los alumnos.
 	 */
 	public String mostrarAlumnos() {
 		String cadena = "\n";

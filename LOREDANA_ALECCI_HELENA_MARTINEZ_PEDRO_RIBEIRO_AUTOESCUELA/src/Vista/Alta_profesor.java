@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,7 +38,7 @@ public class Alta_profesor {
 	
 	/**
 	 * Método que se encarga de crear y hacer visible la interfaz
-	 * @param Autoescuela
+	 * @param a Autoescuela
 	 */
 	private void pinta(Autoescuela a) {
 		ventana3 = new JFrame();
@@ -121,7 +123,12 @@ public class Alta_profesor {
 				num_profesor = Integer.parseInt(escrito_tel.getText());
 				matricula = escrito_matricula_coche.getText();
 				Profesor profe = new Profesor(dni_profesor, edad_profesor, nombre_profesor, num_profesor, asignar_coche(matricula, a));
-				Recepcionista.alta(profe, a);
+				try {
+					Recepcionista.alta(profe, a);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				//Borramos todo
 				escrito_nombre.setText(null);
 				escrito_dni.setText(null);
@@ -143,8 +150,9 @@ public class Alta_profesor {
 	 * Método que escoje un coche de la lista de coches de la autoescuela y la asigna al profesor en el momento en el
 	 * que se le da de alta
 	 * @param matricula String con la matricula del coche
-	 * @param Autoescuela donde se va a dar de alta al profesor
-	 * @return Coche a asignar al profesor 
+	 * @param a Autoescuela donde se va a dar de alta al profesor
+	 * @return Coches Coche a asignar al profesor 
+	 * @throws SQLException 
 	 */
 	public Coches asignar_coche(String matricula, Autoescuela a) {
 		//Variable que almacena un coche nuevo en caso de necesitarlo.
@@ -158,7 +166,12 @@ public class Alta_profesor {
 		//Si se sale del bucle y llega aqui es porque no ha habido coincidencias. El coche no existe. Se crea uno,
 		// se le da de alta en la autoescuela y se devuelve.
 		nuevo = new Coches(matricula);
-		Recepcionista.alta(nuevo, a);
+		try {
+			Recepcionista.alta(nuevo, a);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return nuevo;
 	}
 }

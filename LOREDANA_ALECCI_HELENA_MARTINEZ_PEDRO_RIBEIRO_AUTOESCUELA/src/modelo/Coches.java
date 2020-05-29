@@ -18,6 +18,10 @@ public class Coches {
 	private float precio_gasolina;
 	private final int gasolina_max;
 	
+	/**
+	 * Constructor principal de la clase Coches
+	 * @param matricula String con la matrícula del coche.
+	 */
 	public Coches(String matricula) {
 		this.matricula = matricula;
 		this.lista_arreglos = new HashSet<Arreglo>();
@@ -28,7 +32,7 @@ public class Coches {
 	
 	/**
 	 * Constructor de copia de la clase Coches
-	 * @param coche Objeto de tipo coche que queremos copiar.
+	 * @param c Objeto de tipo coche que queremos copiar.
 	 */
 	public Coches(Coches c) {
 		this.matricula = c.getMatricula();
@@ -44,7 +48,7 @@ public class Coches {
 	/**
 	 * Método que le añade los litros de gasolina necesarios al coche cuando éste se quede vacío. También almacena el
 	 * precio de la gasolina usada.
-	 * @param Autoescuela Autoescuela donde se va a actualizar el estado del vehiculo.
+	 * @param auto Autoescuela donde se va a actualizar el estado del vehiculo.
 	 */
 	public void repostar(Autoescuela auto) {
 		//Solo se va a repostar los litros que faltan para llegar a los 60
@@ -56,7 +60,7 @@ public class Coches {
 	
 	/**
 	 * Método que actualiza los datos del coche en la lista de vehiculos de la autoescuela.
-	 * @param Autoescuela donde se va a actualizar.
+	 * @param auto donde se va a actualizar.
 	 */
 	public void actualizarVehiculoEnAutoescuela(Autoescuela auto) {
 		//Recorro la lista de vehiculos de la autoescuela
@@ -118,6 +122,10 @@ public class Coches {
 		return false;
 	}
 	
+	/**
+	 * Método que muestra los arreglos que tiene el coche asignados. Se usa en el toString.
+	 * @return String con info de los arreglos.
+	 */
 	public String mostrarArreglos() {
 		String cadena = "\n";
 
