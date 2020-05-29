@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import DAO.BBDD;
 import modelo.Autoescuela;
 import modelo.Coches;
 import modelo.Profesor;
@@ -86,6 +88,12 @@ public class Ventana_repostar {
 				if((c=buscar_coche(matricula, a))!=null) {
 					c.repostar(a);
 					fallo.setBounds(250, 280, 300, 20);
+					try {
+						BBDD.actualizarGasolina(matricula);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					fallo.setText("REPOSTADO");
 				}
 				else {

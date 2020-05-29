@@ -5,32 +5,31 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.management.loading.PrivateClassLoader;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import DAO.BBDD;
+import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Recepcionista;
-
+import modelo.tipos_matricula_examen.tipoMatricula;
 /**
- * Esta clase es una interfaz que va a mostrar la lista de alumnos de la autoescuela.
+ * Esta clase es una interfaz, dentro de la interfaz principal, la cual se va a encargar de dar de 
+ *	baja a un alumno. Se ejecutará con el botón ALUMNOS.
  * 
  * @author Loredana Alecci
  * @author Helena Martinez
  * @author Pedro Ribeiro
+ *
  */
-public class Ventana_lista_alumnos {
-
+public class Bajas_individuales {
+	
 	JFrame ventana2;
 	JPanel p;
 	
-	public Ventana_lista_alumnos(Autoescuela a) {
+	public Bajas_individuales(Autoescuela a) {
 		pinta(a);
 	}
 	
@@ -58,12 +57,35 @@ public class Ventana_lista_alumnos {
 		//x - y - ancho - largo
 		titulo.setBounds(85, 11, 500, 44);
 		p.add(titulo);
+	
+		JLabel dni = new JLabel("DNI");
+		dni.setBounds(110, 100, 100, 20);
+		p.add(dni);
 		
-		String nombreColumnas[] = {"DNI", "Edad", "Nombre", "Teléfono", "Tipo examen", "Tipo matrícula", "Clases por dar", "Pagado", "DNI profesor"};
-		//String contenidoColumnas[][] = "SELECT * FROM alumnos";
-		//JTable tabla = new JTable(contenidoColumnas, nombreColumnas);
+		JTextField escrito_dni = new JTextField(15);
+		escrito_dni.setBounds(200, 100, 200, 20);
+		p.add(escrito_dni);
+		
+		//Boton que va a dar de baja al alumno que hayamos creado
+		JButton boton_aceptar = new JButton("ACEPTAR");
+		boton_aceptar.setBounds(200, 200, 200, 20);
+		ActionListener aceptar = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String dni_alumno;
+
+				dni_alumno = escrito_dni.getText();
+				Recepcionista.dar_de_baja_individual_alumno(dni_alumno, a);
+				escrito_dni.setText(null);
+			}
+		};
+		
+		boton_aceptar.addActionListener(aceptar);
+		p.add(boton_aceptar);
 		
 		ventana2.setVisible(true);
 	}
 	
+
 }

@@ -114,28 +114,28 @@ public class Interfaz_principal {
 		bajas.setBounds(284, 51, 48, 14);
 		p.add(bajas);
 		
-		JButton boton_alumnos_bajas = new JButton("ALUMNO");
-		boton_alumnos_bajas.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_alumnos_bajas.setBounds(294, 80, 89, 23);
+		JButton boton_individual_bajas = new JButton("INDIVIDUAL");
+		boton_individual_bajas.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		boton_individual_bajas.setBounds(294, 80, 100, 23);
 		
 		ActionListener accion_baja_alumno = new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Bajas_alumno baja = new Bajas_alumno(a);
+					Bajas_individuales baja = new Bajas_individuales(a);
 				}
 				catch (Exception u) {
 					u.printStackTrace();
 				}
 			}
 		};
-		boton_alumnos_bajas.addActionListener(accion_baja_alumno);
-		p.add(boton_alumnos_bajas);
+		boton_individual_bajas.addActionListener(accion_baja_alumno);
+		p.add(boton_individual_bajas);
 		
 		JButton boton_colectiva = new JButton("COLECTIVA");
 		boton_colectiva.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_colectiva.setBounds(393, 80, 115, 23);
+		boton_colectiva.setBounds(405, 80, 115, 23);
 		ActionListener accion_baja_colectiva = new ActionListener() {
 			
 			@Override
@@ -247,6 +247,24 @@ public class Interfaz_principal {
 		botono_repostar.addActionListener(accion_repostar);
 		p.add(botono_repostar);
 		
+		JButton botono_actualizar_profesor = new JButton("ACTUALIZAR PROFESOR");
+		botono_actualizar_profesor.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		botono_actualizar_profesor.setBounds(294, 286, 214, 23);
+		ActionListener accion_act_prof = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Ventana_actualizar_profesor act = new Ventana_actualizar_profesor(a);
+				}
+				catch (Exception s) {
+					s.printStackTrace();
+				}
+			}
+		};
+		botono_actualizar_profesor.addActionListener(accion_act_prof);
+		p.add(botono_actualizar_profesor);
+		
 		JLabel informacion = new JLabel("INFORMACIÓN");
 		informacion.setFont(new Font("Tahoma", Font.BOLD, 14));
 		informacion.setBounds(50, 225, 125, 14);
@@ -265,7 +283,7 @@ public class Interfaz_principal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-				//Ventana_lista_alumnos vent = new Ventana_lista_alumnos(a);
+				Ventana_lista_alumnos vent = new Ventana_lista_alumnos(a);
 				}
 				catch (Exception b) {
 					b.printStackTrace();
