@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -76,7 +77,12 @@ public class Bajas_alumno {
 				String dni_alumno;
 
 				dni_alumno = escrito_dni.getText();
-				Recepcionista.dar_de_baja_individual_alumno(dni_alumno, a);
+				try {
+					Recepcionista.dar_de_baja_individual_alumno(dni_alumno, a);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				escrito_dni.setText(null);
 			}
 		};

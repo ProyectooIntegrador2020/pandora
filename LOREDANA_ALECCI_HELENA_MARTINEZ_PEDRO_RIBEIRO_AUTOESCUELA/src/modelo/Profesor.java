@@ -1,6 +1,9 @@
 package modelo;
 
+import java.sql.SQLException;
 import java.util.HashSet;
+
+import DAO.BBDD;
 
 /**
  * Clase que almacena a los alumnos asignados a cada profesor, su coche asignado y que contiene las funcionalidades de
@@ -74,8 +77,9 @@ public class Profesor extends Persona {
 	 * @param numClases int Número de clases que ha impartido.
 	 * @param dni String dni del alumno al que ha impartido clases.
 	 * @return String con el resultado de la operación.
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public String imparte_clase(Autoescuela auto, int numClases, String dni) {
+	public String imparte_clase(Autoescuela auto, int numClases, String dni) throws SQLException {
 		
 		boolean hecho = false;
 		String retorno = "";
@@ -100,7 +104,7 @@ public class Profesor extends Persona {
 			return "El alumno que introdujiste no existe o no le quedan clases.";
 		
 		restarGasolina(numClases, auto);
-		
+		BBDD.actualizarGasolina(coche.getMatricula());
 		return retorno;
 		
 	}
@@ -127,10 +131,13 @@ public class Profesor extends Persona {
 	 * @param nombre Nombre del arreglo
 	 * @param precio Precio del arreglo
 	 * @param auto Autoescuela que se está gestionando
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public void necesidad_arreglo(String nombre, float precio, Autoescuela auto) {
+	public void necesidad_arreglo(String nombre, float precio, Autoescuela auto) throws SQLException {
 		coche.getLista_arreglos().add(new Arreglo(nombre, precio));
 		coche.actualizarVehiculoEnAutoescuela(auto);
+		
+		BBDD.insertarArreglo(coche.getMatricula(), nombre, precio);
 	}
 	
 	/**

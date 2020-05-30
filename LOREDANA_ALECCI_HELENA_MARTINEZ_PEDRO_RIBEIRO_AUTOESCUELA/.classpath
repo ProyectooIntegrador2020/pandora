@@ -7,6 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/LOREDANA/Proyecto_integrador/LOREDANA_ALECCI_HELENA_MARTINEZ_PEDRO_RIBEIRO_AUTOESCUELA/ojdbc7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ribeiro/pandora/LOREDANA_ALECCI_HELENA_MARTINEZ_PEDRO_RIBEIRO_AUTOESCUELA/ojdbc7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

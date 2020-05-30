@@ -1,9 +1,12 @@
 package modelo;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Random;
+
+import DAO.BBDD;
 
 /**
  * Esta clase es la encargada de repartir el sueldo a los trabajadores, de almacenar sus alumnos, trabajadores y vehículos
@@ -52,8 +55,9 @@ public class Autoescuela implements tipos_matricula_examen {
 	 * Método encargado de repartir el beneficio a los trabajadores, y en caso de que sobre se almacena para el mes
 	 * siguiente.
 	 * @param cobros float con los cobros finales a repartir entre profesores.
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public void pago_personal(float cobros) {
+	public void pago_personal(float cobros) throws SQLException {
 		//Dinero a repartir este mes es los cobros recientes más los beneficios acumulados.
 		float beneficios = cobros + this.beneficios;
 		//Si tenemos para pagarle el sueldo completo a cada profesor, lo pagamos y el resto se almacena.
@@ -62,6 +66,7 @@ public class Autoescuela implements tipos_matricula_examen {
 			this.beneficios = beneficios;
 		} else //Si no hay suficiente para todos, se entiende que se reparte lo que haya entre los profesores y los beneficios se quedan a 0.
 			this.beneficios = 0;
+		BBDD.actualizarPago(beneficios);
 	}
 	
 	/**

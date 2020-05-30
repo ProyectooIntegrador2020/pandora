@@ -30,7 +30,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * @param a Autoescuela donde se van a matricular.
 	 * @throws FileNotFoundException Si no se encuentra el fichero a leer
 	 * @throws IOException Si se produce algún otro error manejando el fichero.
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 * @throws NumberFormatException 
 	 */
 	public static void alumnosBase(Autoescuela a) throws FileNotFoundException, IOException, NumberFormatException, SQLException {
@@ -49,7 +49,7 @@ public class Recepcionista implements tipos_matricula_examen {
 			splits = Arrays.asList(leido.split(","));
 			//Damos de alta el alumno creando cada alumno directamente en los parametros del metodo.
 			alta(new Alumnos(splits.get(0), Integer.parseInt(splits.get(1)), splits.get(2), Integer.parseInt(splits.get(3)), asignar_matricula(Integer.parseInt(splits.get(4)))), a);
-			//BBDD.insertarAlumns(splits.get(0), Integer.parseInt(splits.get(1)), splits.get(2), Integer.parseInt(splits.get(3)), Integer.parseInt(splits.get(4)));
+			BBDD.insertarAlumns(splits.get(0), Integer.parseInt(splits.get(1)), splits.get(2), Integer.parseInt(splits.get(3)), Integer.parseInt(splits.get(4)));
 		}
 		
 		bfr.close();
@@ -101,19 +101,19 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que da de alta a una persona (puede ser alumno, trabajador o recepcionista).
 	 * @param p Persona que se va a dar de alta. Es un objeto de tipo Persona.
 	 * @param a Autoescuela donde se va a dar de alta.
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static void alta(Persona p, Autoescuela a) throws SQLException {
 		//Chequea si la persona a dar de alta es profesor o alumno y lo añade a los HashList de la autoescuela.
 		if (p instanceof Alumnos) {
 			Alumnos al = (Alumnos)p;
 			a.getLista_alumnos().add(al);
-			//BBDD.insertarAlumns(al.getDni(), al.getEdad(), al.getNombre(), al.getNum_tel(), enumAint(al.getMatricula_pagos()));
+			BBDD.insertarAlumns(al.getDni(), al.getEdad(), al.getNombre(), al.getNum_tel(), enumAint(al.getMatricula_pagos()));
 		}
 		else if (p instanceof Profesor) {
 			Profesor prf = (Profesor)p;
 			a.getLista_profesores().add(prf);
-			//BBDD.insertarProfe(prf.getDni(), prf.getCoche().getMatricula(), prf.getEdad(), prf.getNombre(), prf.getNum_tel());
+			BBDD.insertarProfe(prf.getDni(), prf.getCoche().getMatricula(), prf.getEdad(), prf.getNombre(), prf.getNum_tel());
 		}
 	}
 	
@@ -126,15 +126,16 @@ public class Recepcionista implements tipos_matricula_examen {
 	public static void alta(Coches c, Autoescuela a) throws SQLException {
 		//Chequea si la persona a dar de alta es profesor o alumno y lo añade a los HashList de la autoescuela.
 		a.getLista_vehiculos().add(c);
-		//BBDD.insertarCoche(c.getMatricula());
+		BBDD.insertarCoche(c.getMatricula());
 	}
 	
 	/**
 	 * Método que cobra a todos los alumnos pendientes de cobro.
 	 * @param auto La autoescuela que contiene los alumnos.
 	 * @return beneficios float con los cobros después de haberle quitado los gastos de arreglos y gasolina
+	 * @throws SQLException 
 	 */
-	public static float cobros(Autoescuela auto) {
+	public static float cobros(Autoescuela auto) throws SQLException {
 		ArrayList<Alumnos> sinPagar = new ArrayList<Alumnos>();
 		
 		float cobros = 0;
@@ -243,8 +244,9 @@ public class Recepcionista implements tipos_matricula_examen {
 	/**
 	 * Metodo que recibe los alumnos aprobados del teorico y les cambia el tipo de examen pendiente a practico.
 	 * @param auto Autoescuela.
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public static void gestionarAprobadosTeoricos(Autoescuela auto) {
+	public static void gestionarAprobadosTeoricos(Autoescuela auto) throws SQLException {
 		//ArrayList que aloja la lista de alumnos aprobados.
 		ArrayList<Alumnos> aprobados = new ArrayList<Alumnos>();
 
@@ -257,6 +259,7 @@ public class Recepcionista implements tipos_matricula_examen {
 			a.setExamen(tipoExamen.practico);
 			//lista_alum_espera.add(a);
 			auto.getLista_alum_espera().add(a);
+			BBDD.actualizarAlumno(a.getDni());
 		}
 		//Actualizamos los datos en la lista general de la autoescuela
 		actualizarAlumnosAutoescuelaExamen(aprobados, auto);
@@ -303,8 +306,9 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que actualiza el estado de pago de los alumnos en la lista general de la autoescuela.
 	 * @param alumnosList Lista de alumnos que han sido cobrados.
 	 * @param auto Autoescuela donde están los alumnos.
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public static void actualizarAlumnosAutoescuelaPago(ArrayList<Alumnos> alumnosList, Autoescuela auto) {
+	public static void actualizarAlumnosAutoescuelaPago(ArrayList<Alumnos> alumnosList, Autoescuela auto) throws SQLException {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
 		Iterator<Alumnos> it = auto.getLista_alumnos().iterator();
 		
@@ -327,6 +331,7 @@ public class Recepcionista implements tipos_matricula_examen {
 					alum.setClases_por_dar(a.getClases_por_dar());
 					//Se registra que se ha hecho un cambio
 					hecho = true;
+					BBDD.actualizarAlumnoPago(a.getDni());
 				}
 				//Si se hizo el cambio se sale del bucle que recorre la lista de aprobados
 				if (hecho)
@@ -364,8 +369,9 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * @param dni String con el dni de la persona a dar de baja
 	 * @param auto Autoescuela que estamos gestionando
  	 * @return true si se ha dado de baja correctamente, false si ocurrió algun problema.
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public static boolean dar_de_baja_individual(String dni, Autoescuela auto) {
+	public static boolean dar_de_baja_individual(String dni, Autoescuela auto) throws SQLException {
 		//Iterador para la lista de profesores por si necesitamos usarlo
 		Iterator<Profesor> it = auto.getLista_profesores().iterator();
 		
@@ -375,6 +381,7 @@ public class Recepcionista implements tipos_matricula_examen {
 		for (Alumnos a: auto.getLista_alumnos()) {
 			//Si coincide se procede a dar de baja al alumno.
 			if (a.getDni().equalsIgnoreCase(dni))
+				BBDD.borrarAlumnoIndividual(a.getDni());
 				return dar_de_baja_individual_alumno(dni, auto);
 		}
 		
@@ -385,6 +392,7 @@ public class Recepcionista implements tipos_matricula_examen {
 			if (aux.getDni().equalsIgnoreCase(dni)) {
 				it.remove();
 				reubicarAlumnosEnPrac(aux, auto);
+				BBDD.borrarProfesor(aux.getDni());
 				return true;
 			}
 		}
@@ -395,16 +403,20 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que reparte los alumnos de un profesor entre el resto de profesores.
 	 * @param profe Profesor a ser borrado
 	 * @param auto Autoescuela gestionada.
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public static void reubicarAlumnosEnPrac(Profesor profe, Autoescuela auto) {
+	public static void reubicarAlumnosEnPrac(Profesor profe, Autoescuela auto) throws SQLException {
 		Iterator<Alumnos> it = profe.getLista_alumnos_prac().iterator();
+		Alumnos aux;
 		//Se recorre la lista de profesores de la autoescuela
 		for (Profesor p: auto.getLista_profesores()) {
 			//Chequea si el profesor tiene menos de 10 alumnos asignados. 10 sería el maximo de alumnos.
 			if (p.getLista_alumnos_prac().size() < 10) {
 				//Coge a los primeros en la lista de espera y los asigna a ese profesor hasta que no pueda coger más.
 				while (it.hasNext() && (p.getLista_alumnos_prac().size() < 10)) {
-					p.getLista_alumnos_prac().add(it.next());
+					aux=it.next();
+					p.getLista_alumnos_prac().add(aux);
+					BBDD.actualizarAlumno(aux.getDni());
 					it.remove();
 				}
 			}
@@ -427,8 +439,9 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * @param dni Dni del alumno a dar de baja
 	 * @param auto Autoescuela del alumno
 	 * @return true si se ha dado de baja correctamente, false si ocurrio algun problema.
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public static boolean dar_de_baja_individual_alumno(String dni, Autoescuela auto) {
+	public static boolean dar_de_baja_individual_alumno(String dni, Autoescuela auto) throws SQLException {
 		//Iterador que recorre la lista general de alumnos de la autoescuela.
 		Iterator<Alumnos> it = auto.getLista_alumnos().iterator();
 		
@@ -450,6 +463,7 @@ public class Recepcionista implements tipos_matricula_examen {
 					}
 				// Se le elimina de la lista general de la autoescuela.
 				it.remove();
+				BBDD.borrarAlumnoIndividual(alum.getDni());
 				retorno = true;
 			}
 		}
