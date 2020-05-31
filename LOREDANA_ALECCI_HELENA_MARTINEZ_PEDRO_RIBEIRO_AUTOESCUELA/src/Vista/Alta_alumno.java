@@ -150,24 +150,7 @@ public class Alta_alumno {
 		ventana2.setVisible(true);
 	}
 	
-	/*public tipoMatricula asignar_matricula(int numero) {
-		tipoMatricula tm = null;
-		switch (numero) {
-		case 1:
-			tm=tipoMatricula.basico;
-			break;
-		case 2:
-			tm=tipoMatricula.intermedio;
-			break;
-		case 3:
-			tm=tipoMatricula.completo;
-			break;
-		default:
-			break;
-		}
-		return tm;
-	}
-	*/
+	
 }
 
 

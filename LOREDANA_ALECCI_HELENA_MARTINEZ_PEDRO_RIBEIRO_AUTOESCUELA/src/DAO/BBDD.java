@@ -16,7 +16,7 @@ import modelo.tipos_matricula_examen.tipoMatricula;
 import oracle.jdbc.internal.OracleConnection.ReplayOperation;
 
 /**
- * Esta clase contiene las bases de datos, la cual se va a encargar de insertar, actualizar o borrar tablas.
+ * Esta clase contiene las bases de datos, la cual se va a encargar de insertar, actualizar y borrar tablas.
  * 
  * @author Loredana Alecci
  * @author Helena Martinez
@@ -44,8 +44,8 @@ public class BBDD {
 	
 	/**
 	 * Método que se encarga de conectar la base de datos con java
-	 * @throws SqlException se lanza esta excepción siempre y cuando se trate con bases de datos
 	 * @throws ClassNotFoundException cuando una aplicación intenta cargar en una clase a través del método forName
+	 * @throws SqlException se lanza esta excepción siempre y cuando se trate con bases de datos
 	 */
 	
 	public static void conectar() throws ClassNotFoundException, SQLException {
@@ -131,6 +131,7 @@ public class BBDD {
 	 * @param matricula matrícula del vehiculo que se le hace el arreglo
 	 * @param nombrearreglo Nombre del arreglo
 	 * @param precioArreglo Precio del arreglo
+	 * @return El id del arreglo
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 
 	 */
@@ -167,10 +168,11 @@ public class BBDD {
 	/**
 	 * Este metodo al repostar te actualiza la gasolina
 	 * @param Matricula Matrícula del vehiculo
+	 * @param litros nueva cantidad de litros que tiene el coche
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 
 	 */
-	public static void actualizarGasolina(String Matricula, Float litros ) throws SQLException {
+	public static void actualizarGasolina(String Matricula, float litros ) throws SQLException {
 		PreparedStatement ps = connection.prepareStatement("UPDATE COCHE SET LITROS_GASOLINA = ? WHERE MATRICULA = ? ");
 		
 		ps.setFloat(1, litros );
@@ -182,6 +184,8 @@ public class BBDD {
 	/**
 	 * Este metodo al repostar te actualiza el precio y los litro
 	 * @param Matricula Matrícula del vehiculo
+	 * @param litros nueva cantidad de listros que tiene el coche
+	 * @param precio El precio que se ha gastado en repostar
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 
 	 */
@@ -212,9 +216,8 @@ public class BBDD {
 	/**
 	 * Este metodo actualiza el profesor a un alumno
 	 * @param dniAlumno dni de el alumno
-	 * @param dniProfesor dni de el profesor
+	 * @param dniprofesor dni de el profesor
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
-
 	 */
 	public static void actualizarAlumnoProfesor(String dniAlumno, String dniprofesor) throws SQLException {
 		PreparedStatement ps = connection.prepareStatement("UPDATE ALUMNO SET PROFESOR_DNIPROFESOR = ? WHERE DNIALUMNO = ? ");
@@ -251,7 +254,7 @@ public class BBDD {
 	}
 	
 	/**
-	 * Este metodo actualiza si el alumno ha pagado
+	 * Este metodo actualiza si el alumno ha pagado o no
 	 * @param dniAlumno Dni del alumno
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
@@ -295,7 +298,7 @@ public class BBDD {
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static void borrarAlumnoFromProfesor(String dniAlumno ) throws SQLException {
-		PreparedStatement ps = connection.prepareStatement("DELETE * FROM ALUMNO WHERE DNIPROFESOR = ? ");
+		PreparedStatement ps = connection.prepareStatement("DELETE FROM ALUMNO WHERE DNIPROFESOR = ? ");
 		
 		ps.setString(1, dniAlumno );
 		ps.executeUpdate();
@@ -318,6 +321,7 @@ public class BBDD {
 	/**
 	 * Este método que actualiza el profesor en el coche
 	 * @param dniProfesor del profesor al que se le asigna ese coche
+	 * @param matricula la matrícula del coche 
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static void actualizarProfesorCoche(String dniProfesor, String matricula) throws SQLException {
@@ -333,6 +337,7 @@ public class BBDD {
 	/**
 	 * Este método que actualiza id del arreglo en el coche
 	 * @param id del arreglo de ese coche
+	 * @param matricula la matrícula del coche 
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static void actualizarArregloCoche(int id, String matricula) throws SQLException {

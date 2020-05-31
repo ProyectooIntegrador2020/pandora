@@ -126,7 +126,7 @@ public class Profesor extends Persona {
 	 * Método que resta la gasolina de forma proporcional a las clases impartidas.
 	 * @param numClases Número de clases dadas.
 	 * @param auto Autoescuela que se está gestionando
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public void restarGasolina(int numClases, Autoescuela auto) throws SQLException {
 		Float litros=0f;
@@ -152,6 +152,7 @@ public class Profesor extends Persona {
 	 * @param nombre Nombre del arreglo
 	 * @param precio Precio del arreglo
 	 * @param auto Autoescuela que se está gestionando
+	 * @return el id del arreglo
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public int necesidad_arreglo(String nombre, float precio, Autoescuela auto) throws SQLException {

@@ -31,7 +31,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * @throws FileNotFoundException Si no se encuentra el fichero a leer
 	 * @throws IOException Si se produce algún otro error manejando el fichero.
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
-	 * @throws NumberFormatException 
+	 * @throws NumberFormatException No se pudo convertir de String a número
 	 */
 	public static void alumnosBase(Autoescuela a) throws FileNotFoundException, IOException, NumberFormatException, SQLException {
 		File alumnos = new File("alumnosIniciales.txt");
@@ -122,7 +122,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que da de alta un coche en la autoescuela.
 	 * @param c Coche que se va a dar de alta. Es un objeto de tipo Coche.
 	 * @param a Autoescuela donde se va a dar de alta.
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static void alta(Coches c, Autoescuela a) throws SQLException{
 		a.getLista_vehiculos().add(c);
@@ -133,7 +133,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que cobra a todos los alumnos pendientes de cobro.
 	 * @param auto La autoescuela que contiene los alumnos.
 	 * @return beneficios float con los cobros después de haberle quitado los gastos de arreglos y gasolina
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static float cobros(Autoescuela auto) throws SQLException {
 		ArrayList<Alumnos> sinPagar = new ArrayList<Alumnos>();
@@ -213,7 +213,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que asigna alumnos previamente en lista de espera a un profesor.
 	 * @param a Autoescuela donde están las listas de profesores.
 	 * @return true si se ha podido asignar, false si no se ha podido asignar.
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static boolean asignar_alumno_profesor(Autoescuela a) throws SQLException {
 		//Guarda el tamaño de la lista de espera al inicio de la operacion.
@@ -352,7 +352,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que comprueba cuántos alumnos han aprobado y da de baja a aquellos que lo han hecho.
 	 * @param auto Autoescuela de donde se saca la info de los aprobados.
 	 * @return true si se han dado de baja correctamente, false si ha habido algún error.
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public static boolean dar_de_baja_colectiva(Autoescuela auto) throws SQLException {
 		//ArrayList que aloja la lista de alumnos aprobados.

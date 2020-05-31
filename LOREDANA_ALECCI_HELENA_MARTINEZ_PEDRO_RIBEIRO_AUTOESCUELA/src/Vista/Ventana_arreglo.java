@@ -118,6 +118,12 @@ public class Ventana_arreglo {
 		ventana2.setVisible(true);
 	}
 	
+	/**
+	 * Método que se encarga de buscar que el coche introducido existe
+	 * @param matricula Matricula del coche
+	 * @param a Autoescuela
+	 * @return El profesor que tiene la matrícula asignada igual que la pasada por parámetro
+	 */
 	public Profesor buscar_coche(String matricula, Autoescuela a) {
 		Profesor p= null;
 		for(Profesor po: a.getLista_profesores()) {

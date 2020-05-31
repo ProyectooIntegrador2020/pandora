@@ -52,7 +52,7 @@ public class Coches {
 	 * Método que le añade los litros de gasolina necesarios al coche cuando éste se quede vacío. También almacena el
 	 * precio de la gasolina usada.
 	 * @param auto Autoescuela donde se va a actualizar el estado del vehiculo.
-	 * @throws SQLException 
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
 	public void repostar(Autoescuela auto) throws SQLException {
 		//Solo se va a repostar los litros que faltan para llegar a los 60
