@@ -89,7 +89,7 @@ public class Ventana_repostar {
 					c.repostar(a);
 					fallo.setBounds(250, 280, 300, 20);
 					try {
-						BBDD.actualizarGasolina(matricula);
+						BBDD.actualizarGasolina(matricula, 60f);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -68,14 +69,19 @@ public class Ventana_asignar_alumnos_profesor {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(Recepcionista.asignar_alumno_profesor(a)) {
-					listo.setText("HECHO!");
-				}
-				else {
-					//Como la frase es más larga, se modifica dónde empieza el texto para que
-					//este mensaje salga en el centro
-					listo.setBounds(210, 200, 200, 20);
-					listo.setText("NO SE HA MODIFICADO NADA :(");;
+				try {
+					if(Recepcionista.asignar_alumno_profesor(a)) {
+						listo.setText("HECHO!");
+					}
+					else {
+						//Como la frase es más larga, se modifica dónde empieza el texto para que
+						//este mensaje salga en el centro
+						listo.setBounds(210, 200, 200, 20);
+						listo.setText("NO SE HA MODIFICADO NADA :(");;
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		};

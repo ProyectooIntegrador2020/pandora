@@ -40,6 +40,20 @@ public class Profesor extends Persona {
 	}
 	
 	/**
+	 * Cosntructor para usarlo en la muestra de datos de la interfaz
+	 * @param dni String con el DNI del profesor.
+	 * @param edad int con la edad del profesor
+	 * @param nombre String con el nombre del profesor
+	 * @param num int con el número de teléfono del profesor
+	 */
+	public Profesor(String dni, int edad, String nombre, int num) {
+		super(dni, edad, nombre, num);
+		// TODO Auto-generated constructor stub
+		this.lista_alumnos_prac = new HashSet<Alumnos>();
+
+	}
+	
+	/**
 	 * Constructor de copia de la clase Profesor.
 	 * @param e un objeto tipo Profesor del que se copiará la información.
 	 */
@@ -104,7 +118,6 @@ public class Profesor extends Persona {
 			return "El alumno que introdujiste no existe o no le quedan clases.";
 		
 		restarGasolina(numClases, auto);
-		BBDD.actualizarGasolina(coche.getMatricula());
 		return retorno;
 		
 	}
@@ -113,16 +126,24 @@ public class Profesor extends Persona {
 	 * Método que resta la gasolina de forma proporcional a las clases impartidas.
 	 * @param numClases Número de clases dadas.
 	 * @param auto Autoescuela que se está gestionando
+	 * @throws SQLException 
 	 */
-	public void restarGasolina(int numClases, Autoescuela auto) {
+	public void restarGasolina(int numClases, Autoescuela auto) throws SQLException {
+		Float litros=0f;
 		//Si se encontró se gastará unos litros de gasolina proporcionales al numero de clases impartidas.
-		if (numClases <= 5)
+		if (numClases <= 5) {
+			litros=coche.getLitros_gasolina()-15;
 			coche.setLitros_gasolina(coche.getLitros_gasolina()-15);
-		else if (numClases > 5 && numClases <= 10)
+		}
+		else if (numClases > 5 && numClases <= 10) {
+			litros=coche.getLitros_gasolina()-30;
 			coche.setLitros_gasolina(coche.getLitros_gasolina()-30);
+		}
 		else if (numClases > 10) {
+			litros=coche.getLitros_gasolina()-50;
 			coche.setLitros_gasolina(coche.getLitros_gasolina()-50);
 		}
+		BBDD.actualizarGasolina(coche.getMatricula(), litros);
 		coche.actualizarVehiculoEnAutoescuela(auto);
 	}
 	

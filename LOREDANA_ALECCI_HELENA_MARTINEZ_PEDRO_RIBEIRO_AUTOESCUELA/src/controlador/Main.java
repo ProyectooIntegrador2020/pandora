@@ -41,7 +41,7 @@ public class Main {
 			
 			BBDD.conectar();
 			
-			Recepcionista.alta(coche1, nochoques);
+			/*Recepcionista.alta(coche1, nochoques);
 			Recepcionista.alta(coche2, nochoques);
 			Recepcionista.alta(coche3, nochoques);
 			
@@ -143,18 +143,22 @@ public class Main {
 			
 			System.out.format("%s\n", "INFO AUTOESCUELA");
 			System.out.format("%s\n", nochoques.toString());
+			*/
+			//BBDD.cerrar();
 			
-			BBDD.cerrar();
-			
-		} catch (FileNotFoundException fnfe) {
+		} 
+		/*catch (FileNotFoundException fnfe) {
 			System.out.format("%s\n", "El archivo no fue encontrado.");
-		} catch (NullPointerException npe) {
+		} */
+			catch (NullPointerException npe) {
 			System.out.format("%s\n", "Intentaste acceder a un nulo.");
 		} catch (ConcurrentModificationException cme) {
 			System.out.format("%s\n", "Has intentado modificar una colección que estaba siendo recorrida.");
-		} catch (IOException ioe) {
+		} 
+		/*catch (IOException ioe) {
 			System.out.format("%s\n", "Hubo un problema manejando ficheros.");
-		} catch (IllegalArgumentException iae) {
+		} */
+		catch (IllegalArgumentException iae) {
 			System.out.format("%s\n", "Has intentado introducir un dato no válido.");
 		} catch (ClassNotFoundException e) {
 			System.out.format("%s\n", "No se encontró la clase a la que intentas acceder.");

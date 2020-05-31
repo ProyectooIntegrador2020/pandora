@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -102,12 +103,20 @@ public class Ventana_impartir_clase {
 				numero= Integer.parseInt(escrito_num.getText());
 				if((p=buscar_profesor(dni_prof, a))!=null) {
 					boton_aceptar.setBounds(150, 250, 200, 20);
-					fallo.setText(p.imparte_clase(a, numero, dni_alu));
+					try {
+						fallo.setText(p.imparte_clase(a, numero, dni_alu));
+						escrito_dni_alumno.setText(null);
+						escrito_dni_profe.setText(null);
+						escrito_num.setText(null);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				else {
 					fallo.setText("EL PROFESOR NO EXISTE");
 				}
-				
+	
 			}
 		};
 		//Metemos la acción en el botón

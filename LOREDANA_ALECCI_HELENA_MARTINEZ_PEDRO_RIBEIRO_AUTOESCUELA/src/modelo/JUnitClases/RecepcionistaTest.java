@@ -93,7 +93,7 @@ public class RecepcionistaTest {
 	}
 	
 	@Test
-	public void testCobros() {
+	public void testCobros() throws SQLException {
 		assertEquals(1313.5, Recepcionista.cobros(nochoques), 0.10);
 	}
 
@@ -145,7 +145,7 @@ public class RecepcionistaTest {
 	}
 
 	@Test
-	public void testAsignar_alumno_profesor() {
+	public void testAsignar_alumno_profesor() throws SQLException {
 		//Cambio manualmente el estado del examen de los alumnos y los añado a la lista de espera.
 		a2.setExamen(tipoExamen.practico);
 		a3.setExamen(tipoExamen.practico);
@@ -164,7 +164,7 @@ public class RecepcionistaTest {
 	}
 	
 	@Test
-	public void testDar_de_baja_individual2() {
+	public void testDar_de_baja_individual2() throws SQLException {
 		//Baja de profesor.
 		assertTrue(Recepcionista.dar_de_baja_individual("12345678T", nochoques));
 		for (Profesor p: nochoques.getLista_profesores()) {

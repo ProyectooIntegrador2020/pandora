@@ -123,8 +123,7 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * @param a Autoescuela donde se va a dar de alta.
 	 * @throws SQLException 
 	 */
-	public static void alta(Coches c, Autoescuela a) throws SQLException {
-		//Chequea si la persona a dar de alta es profesor o alumno y lo añade a los HashList de la autoescuela.
+	public static void alta(Coches c, Autoescuela a) throws SQLException{
 		a.getLista_vehiculos().add(c);
 		BBDD.insertarCoche(c.getMatricula());
 	}
@@ -152,14 +151,17 @@ public class Recepcionista implements tipos_matricula_examen {
 				case basico:
 					cobros+=200;
 					a.setClases_por_dar(10);
+					BBDD.actualizarAlumnoClases(a.getDni(), 10);
 					break;
 				case intermedio:
 					cobros+=400;
 					a.setClases_por_dar(15);
+					BBDD.actualizarAlumnoClases(a.getDni(), 15);
 					break;
 				case completo:
 					cobros+=800;
 					a.setClases_por_dar(25);
+					BBDD.actualizarAlumnoClases(a.getDni(), 25);
 					break;
 				default:
 					cobros+=200;
@@ -210,20 +212,23 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que asigna alumnos previamente en lista de espera a un profesor.
 	 * @param a Autoescuela donde están las listas de profesores.
 	 * @return true si se ha podido asignar, false si no se ha podido asignar.
+	 * @throws SQLException 
 	 */
-	public static boolean asignar_alumno_profesor(Autoescuela a) {
+	public static boolean asignar_alumno_profesor(Autoescuela a) throws SQLException {
 		//Guarda el tamaño de la lista de espera al inicio de la operacion.
 		int tamanioIni = a.getLista_alum_espera().size();
 		//Crea un iterador para recorrer la lista de espera.
 		Iterator<Alumnos> it = a.getLista_alum_espera().iterator();
-		
+		Alumnos aux;
 		//Se recorre la lista de profesores de la autoescuela
 		for (Profesor p: a.getLista_profesores()) {
 			//Chequea si el profesor tiene menos de 10 alumnos asignados. 10 sería el maximo de alumnos.
 			if (p.getLista_alumnos_prac().size() < 10) {
 				//Coge a los primeros en la lista de espera y los asigna a ese profesor hasta que no pueda coger más.
 				while (it.hasNext() && (p.getLista_alumnos_prac().size() < 10)) {
-					p.getLista_alumnos_prac().add(it.next());
+					aux = it.next();
+					p.getLista_alumnos_prac().add(aux);
+					BBDD.actualizarAlumnoProfesor(aux.getDni(), p.getDni());
 					it.remove();
 				}
 			}
@@ -346,8 +351,9 @@ public class Recepcionista implements tipos_matricula_examen {
 	 * Método que comprueba cuántos alumnos han aprobado y da de baja a aquellos que lo han hecho.
 	 * @param auto Autoescuela de donde se saca la info de los aprobados.
 	 * @return true si se han dado de baja correctamente, false si ha habido algún error.
+	 * @throws SQLException 
 	 */
-	public static boolean dar_de_baja_colectiva(Autoescuela auto) {
+	public static boolean dar_de_baja_colectiva(Autoescuela auto) throws SQLException {
 		//ArrayList que aloja la lista de alumnos aprobados.
 		ArrayList<Alumnos> aprobados = new ArrayList<Alumnos>();
 		
@@ -359,6 +365,7 @@ public class Recepcionista implements tipos_matricula_examen {
 		for (Alumnos a: aprobados) {
 			auto.getLista_alumnos().remove(a);
 			eliminaAlumnoDeProfe(auto, a);
+			BBDD.borrarAlumnoIndividual(a.getDni());
 		}
 		
 		return true;
@@ -381,7 +388,6 @@ public class Recepcionista implements tipos_matricula_examen {
 		for (Alumnos a: auto.getLista_alumnos()) {
 			//Si coincide se procede a dar de baja al alumno.
 			if (a.getDni().equalsIgnoreCase(dni))
-				BBDD.borrarAlumnoIndividual(a.getDni());
 				return dar_de_baja_individual_alumno(dni, auto);
 		}
 		
@@ -390,9 +396,9 @@ public class Recepcionista implements tipos_matricula_examen {
 		while (it.hasNext()) {
 			aux = new Profesor(it.next());
 			if (aux.getDni().equalsIgnoreCase(dni)) {
+				BBDD.borrarProfesor(aux.getDni());
 				it.remove();
 				reubicarAlumnosEnPrac(aux, auto);
-				BBDD.borrarProfesor(aux.getDni());
 				return true;
 			}
 		}
@@ -452,6 +458,7 @@ public class Recepcionista implements tipos_matricula_examen {
 		while (it.hasNext()) {
 			alum = it.next();
 			if (alum.getDni().equalsIgnoreCase(dni)) {
+				BBDD.borrarAlumnoIndividual(dni);
 				//Si el alumno tiene pendiente el examen practico se intenta eliminar de su profesor asignado
 				if (alum.getExamen()==tipoExamen.practico)
 					if (eliminaAlumnoDeProfe(auto, alum))
@@ -463,7 +470,6 @@ public class Recepcionista implements tipos_matricula_examen {
 					}
 				// Se le elimina de la lista general de la autoescuela.
 				it.remove();
-				BBDD.borrarAlumnoIndividual(alum.getDni());
 				retorno = true;
 			}
 		}

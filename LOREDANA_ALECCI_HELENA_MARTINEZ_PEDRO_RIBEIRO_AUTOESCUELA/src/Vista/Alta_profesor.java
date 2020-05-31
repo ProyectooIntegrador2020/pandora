@@ -101,6 +101,9 @@ public class Alta_profesor {
 		escrito_matricula_coche.setBounds(200, 190, 200, 20);
 		p.add(escrito_matricula_coche);
 		
+		JLabel fallo = new JLabel();
+		p.add(fallo);
+		
 		//Boton que va a dar de alta al profesor que hayamos creado
 		JButton boton_aceptar = new JButton("ACEPTAR");
 		boton_aceptar.setBounds(200, 250, 200, 20);
@@ -125,6 +128,8 @@ public class Alta_profesor {
 				Profesor profe = new Profesor(dni_profesor, edad_profesor, nombre_profesor, num_profesor, asignar_coche(matricula, a));
 				try {
 					Recepcionista.alta(profe, a);
+					fallo.setBounds(230, 230, 100, 23);
+					fallo.setText("HECHO");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

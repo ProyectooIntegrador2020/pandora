@@ -103,6 +103,10 @@ public class Alta_alumno {
 		escrito_num_matricula.setBounds(200, 220, 200, 20);
 		p.add(escrito_num_matricula);
 		
+		JLabel error = new JLabel();
+		error.setBounds(245, 300, 200, 23);
+		p.add(error);
+		
 		//Boton que va a dar de alta al alumno que hayamos creado
 		JButton boton_aceptar = new JButton("ACEPTAR");
 		boton_aceptar.setBounds(200, 270, 200, 20);
@@ -126,16 +130,17 @@ public class Alta_alumno {
 				Alumnos alumno = new Alumnos(dni_alumno, edad_alumno, nombre_alumno, num, Recepcionista.asignar_matricula(numero_matricula));
 				try {
 					Recepcionista.alta(alumno, a);
+					error.setText("HECHO");
+					//Borramos todo
+					escrito_nombre.setText(null);
+					escrito_dni.setText(null);
+					escrito_edad.setText(null);
+					escrito_tel.setText(null);
+					escrito_num_matricula.setText(null);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					error.setText("DATOS DUPLICADOS");
 				}
-				//Borramos todo
-				escrito_nombre.setText(null);
-				escrito_dni.setText(null);
-				escrito_edad.setText(null);
-				escrito_tel.setText(null);
-				escrito_num_matricula.setText(null);
+				
 			}
 		};
 		

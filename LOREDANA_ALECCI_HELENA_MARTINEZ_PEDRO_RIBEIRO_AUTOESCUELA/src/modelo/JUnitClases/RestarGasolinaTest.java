@@ -47,7 +47,7 @@ public class RestarGasolinaTest {
 	}
 	
 	@Test
-	public void testAsignar_matricula() {
+	public void testAsignar_matricula() throws SQLException {
 		pr1.restarGasolina(numClases, auto);
 		assertEquals(result, pr1.getCoche().getLitros_gasolina(), 0.10);
 	}

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -58,7 +59,7 @@ public class Baja_colectiva {
 		p.add(titulo);
 	
 		JLabel listo = new JLabel();
-		listo.setBounds(270, 200, 200, 20);
+		listo.setBounds(230, 200, 200, 20);
 		p.add(listo);
 		
 		//Boton que va a dar de baja a todos los que estén aprobados
@@ -68,8 +69,15 @@ public class Baja_colectiva {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(Recepcionista.dar_de_baja_colectiva(a)) {
-					listo.setText("HECHO!");
+				try {
+					if(Recepcionista.dar_de_baja_colectiva(a)) {
+						listo.setText("HECHO!");
+					}
+				} catch (SQLException e1) {
+					listo.setText("No hay gente aprobada");
+				}
+				catch (Exception e2) {
+					listo.setText("No hay gente aprobada");
 				}
 			}
 		};

@@ -1,6 +1,9 @@
 package modelo;
 
+import java.sql.SQLException;
 import java.util.Iterator;
+
+import DAO.BBDD;
 
 /**
  * Clase que almacena la información específica de cada alumno de la Autoescuela.
@@ -58,10 +61,22 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 			numClases = clases_por_dar;
 		//Se restan las clases
 		clases_por_dar -= numClases;
-		
+		try {
+			BBDD.actualizarAlumnoClases(getDni(), clases_por_dar);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Si se ha quedado sin clases se le resetea el estado de pago para que pague la matrícula de nuevo.
-		if (clases_por_dar <= 0)
-			pagado = false;
+		if (clases_por_dar <= 0) {
+			try {
+				pagado = false;
+				BBDD.actualizarAlumnoNoPago(getDni());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		//Devuelve true si se han restado clases.
 		return true;
@@ -99,6 +114,7 @@ public class Alumnos extends Persona implements tipos_matricula_examen {
 		this.clases_por_dar = clases_dadas;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Alumno " + super.toString() + ", matricula_pagos=" + matricula_pagos + ", examen=" + examen

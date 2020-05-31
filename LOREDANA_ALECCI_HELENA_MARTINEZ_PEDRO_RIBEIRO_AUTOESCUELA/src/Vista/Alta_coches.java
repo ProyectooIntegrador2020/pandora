@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import DAO.BBDD;
 import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Coches;
@@ -67,6 +69,9 @@ public class Alta_coches {
 			escrito_mat.setBounds(200, 70, 200, 20);
 			p.add(escrito_mat);
 			
+			JLabel fallo = new JLabel();
+			p.add(fallo);
+			
 			//Boton que va a dar de alta al coche que hayamos creado
 			JButton boton_aceptar = new JButton("ACEPTAR");
 			boton_aceptar.setBounds(200, 200, 200, 20);
@@ -75,6 +80,15 @@ public class Alta_coches {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Coches coche = new Coches(escrito_mat.getText());
+					try {
+						Recepcionista.alta(coche, a);
+						fallo.setBounds(230, 230, 100, 23);
+						fallo.setText("HECHO");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 					escrito_mat.setText(null);
 				}
 			};

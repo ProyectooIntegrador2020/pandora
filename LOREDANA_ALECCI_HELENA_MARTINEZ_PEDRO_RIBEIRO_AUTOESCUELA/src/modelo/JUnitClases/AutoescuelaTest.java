@@ -2,6 +2,8 @@ package modelo.JUnitClases;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -63,7 +65,7 @@ public class AutoescuelaTest {
 	}
 
 	@Test
-	public void testPago_personal() {
+	public void testPago_personal() throws SQLException {
 		
 		nochoques.pago_personal(Recepcionista.cobros(nochoques));
 		

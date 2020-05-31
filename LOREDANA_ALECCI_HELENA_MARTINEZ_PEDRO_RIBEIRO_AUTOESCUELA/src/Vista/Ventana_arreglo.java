@@ -5,33 +5,31 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import DAO.BBDD;
 import modelo.Alumnos;
+import modelo.Arreglo;
 import modelo.Autoescuela;
+import modelo.Coches;
+import modelo.Profesor;
 import modelo.Recepcionista;
-import modelo.tipos_matricula_examen.tipoMatricula;
-/**
- * Esta clase es una interfaz, dentro de la interfaz principal, la cual se va a encargar de dar de 
- *	baja a un alumno. Se ejecutará con el botón ALUMNOS.
- * 
- * @author Loredana Alecci
- * @author Helena Martinez
- * @author Pedro Ribeiro
- *
- */
-public class Bajas_individuales {
-	
+
+public class Ventana_arreglo {
+
 	JFrame ventana2;
 	JPanel p;
 	
-	public Bajas_individuales(Autoescuela a) {
+	public Ventana_arreglo(Autoescuela a) {
 		pinta(a);
 	}
 	
@@ -57,47 +55,74 @@ public class Bajas_individuales {
 		//El número es el tamaño de la letra
 		titulo.setFont(new Font("Showcard Gothic", Font.BOLD, 30));
 		//x - y - ancho - largo
-		titulo.setBounds(85, 11, 500, 44);
+		titulo.setBounds(105, 11, 500, 44);
 		p.add(titulo);
-	
-		JLabel dni = new JLabel("DNI");
-		dni.setBounds(110, 100, 100, 20);
-		p.add(dni);
 		
-		JTextField escrito_dni = new JTextField(15);
-		escrito_dni.setBounds(200, 100, 200, 20);
-		p.add(escrito_dni);
+		JLabel matricula = new JLabel("MATRÍCULA");
+		matricula.setBounds(110, 70, 100, 20);
+		p.add(matricula);
+		
+		JTextField escrito_mat = new JTextField(15);
+		escrito_mat.setBounds(200, 70, 200, 20);
+		p.add(escrito_mat);
+		
+		JLabel precio = new JLabel("PRECIO");
+		precio.setBounds(110, 100, 100, 20);
+		p.add(precio);
+		
+		JTextField escrito_precio = new JTextField(15);
+		escrito_precio.setBounds(200, 100, 200, 20);
+		p.add(escrito_precio);
+		
+		JLabel nombre = new JLabel("NOMBRE");
+		nombre.setBounds(110, 130, 100, 20);
+		p.add(nombre);
+		
+		JTextField escrito_nombre = new JTextField(15);
+		escrito_nombre.setBounds(200, 130, 200, 20);
+		p.add(escrito_nombre);
 		
 		JLabel fallo = new JLabel();
 		p.add(fallo);
 		
-		//Boton que va a dar de baja al alumno que hayamos creado
 		JButton boton_aceptar = new JButton("ACEPTAR");
 		boton_aceptar.setBounds(200, 200, 200, 20);
 		ActionListener aceptar = new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String dni;
-
-				dni = escrito_dni.getText();
+				float precio=Float.parseFloat(escrito_precio.getText());
+				Profesor p;
 				try {
-					Recepcionista.dar_de_baja_individual(dni, a);
-					fallo.setBounds(230, 230, 100, 23);
-					fallo.setText("HECHO");
+					if((p=buscar_coche(escrito_mat.getText(), a))!=null) {
+						p.necesidad_arreglo(escrito_nombre.getText(), precio, a);
+					}
+					else {
+						fallo.setBounds(220, 220, 100, 23);
+						fallo.setText("ERROR");
+					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				escrito_dni.setText(null);
+				
+				escrito_mat.setText(null);
+				escrito_nombre.setText(null);
+				escrito_precio.setText(null);
 			}
 		};
-		
 		boton_aceptar.addActionListener(aceptar);
 		p.add(boton_aceptar);
 		
 		ventana2.setVisible(true);
 	}
 	
-
+	public Profesor buscar_coche(String matricula, Autoescuela a) {
+		Profesor p= null;
+		for(Profesor po: a.getLista_profesores()) {
+			if(po.getCoche().getMatricula().equalsIgnoreCase(matricula)) {
+				p = new Profesor(po);
+			}
+		}
+		return p;
+	}
 }

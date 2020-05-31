@@ -109,6 +109,26 @@ public class Interfaz_principal {
 		boton_coche_altas.addActionListener(accion_alta_coche);
 		p.add(boton_coche_altas);
 		
+		JButton boton_arrelo_altas = new JButton("ARREGLO");
+		boton_arrelo_altas.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		boton_arrelo_altas.setBounds(159, 115, 93, 23);
+		ActionListener accion_alta_arreglo = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					//Llamamos al constructor de la ventana que queremos que se abra
+					Ventana_arreglo ar = new Ventana_arreglo(a);
+				}
+				catch (Exception u) {
+					u.printStackTrace();
+				}
+			}
+		};
+		//le asignamos una función al botón
+		boton_arrelo_altas.addActionListener(accion_alta_arreglo);
+		p.add(boton_arrelo_altas);
+		
 		JLabel bajas = new JLabel("BAJAS");
 		bajas.setFont(new Font("Tahoma", Font.BOLD, 14));
 		bajas.setBounds(284, 51, 48, 14);
@@ -191,7 +211,9 @@ public class Interfaz_principal {
 		};
 		boton_asignar_alumno.addActionListener(accion_asignar_alumno_profesor);
 		p.add(boton_asignar_alumno);
-		
+		JLabel error = new JLabel();
+		error.setBounds(520, 182, 50, 23);
+		p.add(error);
 		JButton boton_aprobado_teorico = new JButton("APROBADO DE TEÓRICOS");
 		boton_aprobado_teorico.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		boton_aprobado_teorico.setBounds(294, 182, 214, 23);
@@ -200,10 +222,12 @@ public class Interfaz_principal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-				Recepcionista.gestionarAprobadosTeoricos(a);
+					Recepcionista.gestionarAprobadosTeoricos(a);
+					error.setText("HECHO");
 				}
 				catch (Exception s) {
-					s.printStackTrace();
+					error.setText("ERROR");
+					//s.printStackTrace();
 				}
 			}
 		};
@@ -247,37 +271,14 @@ public class Interfaz_principal {
 		botono_repostar.addActionListener(accion_repostar);
 		p.add(botono_repostar);
 		
-		JButton botono_actualizar_profesor = new JButton("ACTUALIZAR PROFESOR");
-		botono_actualizar_profesor.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		botono_actualizar_profesor.setBounds(294, 286, 214, 23);
-		ActionListener accion_act_prof = new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Ventana_actualizar_profesor act = new Ventana_actualizar_profesor(a);
-				}
-				catch (Exception s) {
-					s.printStackTrace();
-				}
-			}
-		};
-		botono_actualizar_profesor.addActionListener(accion_act_prof);
-		p.add(botono_actualizar_profesor);
-		
 		JLabel informacion = new JLabel("INFORMACIÓN");
 		informacion.setFont(new Font("Tahoma", Font.BOLD, 14));
 		informacion.setBounds(50, 225, 125, 14);
 		p.add(informacion);
 		
-		JButton boton_lista_profesores = new JButton("LISTA PROFESORES");
-		boton_lista_profesores.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_lista_profesores.setBounds(60, 250, 195, 23);
-		p.add(boton_lista_profesores);
-		
 		JButton boton_lista_alumnos = new JButton("LISTA ALUMNOS");
 		boton_lista_alumnos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_lista_alumnos.setBounds(60, 284, 195, 23);
+		boton_lista_alumnos.setBounds(60, 248, 195, 23);
 		ActionListener accion_mostrar_alumnos = new ActionListener() {
 			
 			@Override
@@ -295,19 +296,17 @@ public class Interfaz_principal {
 		
 		JButton boton_lista_vehiculos = new JButton("LISTA VEHÍCULOS");
 		boton_lista_vehiculos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_lista_vehiculos.setBounds(60, 318, 195, 23);
+		boton_lista_vehiculos.setBounds(60, 278, 195, 23);
+		ActionListener accion_mostrar_coches = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Ventana_mostrar_coches mc = new Ventana_mostrar_coches(a);
+				
+			}
+		};
+		boton_lista_vehiculos.addActionListener(accion_mostrar_coches);
 		p.add(boton_lista_vehiculos);
-		
-		JButton boton_datos_persona = new JButton("DATOS PERSONA");
-		boton_datos_persona.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_datos_persona.setBounds(60, 354, 133, 23);
-		p.add(boton_datos_persona);
-		
-		JButton boton_datos_coche = new JButton("DATOS COCHE");
-		boton_datos_coche.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		boton_datos_coche.setBounds(60, 388, 133, 23);
-		p.add(boton_datos_coche);
-		
 
 		//Coloca la ventana en el centro nada más abrirse
 		ventana.setLocationRelativeTo(null);
