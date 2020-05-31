@@ -93,9 +93,11 @@ public class Ventana_arreglo {
 			public void actionPerformed(ActionEvent e) {
 				float precio=Float.parseFloat(escrito_precio.getText());
 				Profesor p;
+				int id;
 				try {
 					if((p=buscar_coche(escrito_mat.getText(), a))!=null) {
-						p.necesidad_arreglo(escrito_nombre.getText(), precio, a);
+						id =p.necesidad_arreglo(escrito_nombre.getText(), precio, a);
+						BBDD.actualizarArregloCoche(id, p.getCoche().getMatricula());
 					}
 					else {
 						fallo.setBounds(220, 220, 100, 23);
@@ -104,10 +106,10 @@ public class Ventana_arreglo {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-				
 				escrito_mat.setText(null);
 				escrito_nombre.setText(null);
 				escrito_precio.setText(null);
+				
 			}
 		};
 		boton_aceptar.addActionListener(aceptar);

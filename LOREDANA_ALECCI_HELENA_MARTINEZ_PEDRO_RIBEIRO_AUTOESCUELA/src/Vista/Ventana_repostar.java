@@ -86,7 +86,12 @@ public class Ventana_repostar {
 				matricula = escrito_matricula_coche.getText();
 				Coches c = null;
 				if((c=buscar_coche(matricula, a))!=null) {
-					c.repostar(a);
+					try {
+						c.repostar(a);
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
 					fallo.setBounds(250, 280, 300, 20);
 					try {
 						BBDD.actualizarGasolina(matricula, 60f);

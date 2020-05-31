@@ -114,6 +114,7 @@ public class Recepcionista implements tipos_matricula_examen {
 			Profesor prf = (Profesor)p;
 			a.getLista_profesores().add(prf);
 			BBDD.insertarProfe(prf.getDni(), prf.getCoche().getMatricula(), prf.getEdad(), prf.getNombre(), prf.getNum_tel());
+			BBDD.actualizarProfesorCoche(prf.getDni(), ((Profesor) p).getCoche().getMatricula());
 		}
 	}
 	

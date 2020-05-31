@@ -154,11 +154,14 @@ public class Profesor extends Persona {
 	 * @param auto Autoescuela que se está gestionando
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 	 */
-	public void necesidad_arreglo(String nombre, float precio, Autoescuela auto) throws SQLException {
+	public int necesidad_arreglo(String nombre, float precio, Autoescuela auto) throws SQLException {
+		int id;
 		coche.getLista_arreglos().add(new Arreglo(nombre, precio));
 		coche.actualizarVehiculoEnAutoescuela(auto);
 		
-		BBDD.insertarArreglo(coche.getMatricula(), nombre, precio);
+		id=BBDD.insertarArreglo(coche.getMatricula(), nombre, precio);
+		//BBDD.actualizarArregloCoche(id, coche.getMatricula());
+		return id;
 	}
 	
 	/**

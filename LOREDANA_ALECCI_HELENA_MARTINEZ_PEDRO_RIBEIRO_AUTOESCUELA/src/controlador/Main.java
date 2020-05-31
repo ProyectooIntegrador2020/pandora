@@ -146,6 +146,10 @@ public class Main {
 			*/
 			//BBDD.cerrar();
 			
+			//Recepcionista.alumnosBase(nochoques);
+			
+			
+			
 		} 
 		/*catch (FileNotFoundException fnfe) {
 			System.out.format("%s\n", "El archivo no fue encontrado.");
@@ -169,6 +173,7 @@ public class Main {
 			System.out.format("%s\n", "Se produjo un error.");
 			e.getStackTrace();
 		}
+		
 		
 		Interfaz_principal.ventana_principal(nochoques);
 		

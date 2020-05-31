@@ -39,7 +39,7 @@ public class BBDD {
 		password = "autoproyecto";
 		url = "jdbc:oracle:thin:@localhost:1521:"+ bd;
 		connection = null;
-		contador = 100;
+		contador = 130;
 	}
 	
 	/**
@@ -134,7 +134,7 @@ public class BBDD {
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
 
 	 */
-	public static void insertarArreglo(String matricula, String nombrearreglo, float precioArreglo  ) throws SQLException {
+	public static int insertarArreglo(String matricula, String nombrearreglo, float precioArreglo  ) throws SQLException {
 		PreparedStatement ps = connection.prepareStatement("INSERT INTO ARREGLO VALUES (?, ?, ?, ?)");
 		
 		int idArreglo;
@@ -146,6 +146,8 @@ public class BBDD {
 		ps.executeUpdate();
 		ps.close();
 		contador++;
+		
+		return idArreglo;
 	}
 	
 	/**
@@ -176,6 +178,23 @@ public class BBDD {
 		ps.executeUpdate();
 		ps.close();
 	}
+	
+	/**
+	 * Este metodo al repostar te actualiza el precio y los litro
+	 * @param Matricula Matrícula del vehiculo
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
+
+	 */
+	public static void actualizarPrecioGasol(String Matricula, float litros, float precio ) throws SQLException {
+		PreparedStatement ps = connection.prepareStatement("UPDATE COCHE SET LITROS_GASOLINA = ? , PRECIO_GASOLINA = ? WHERE MATRICULA = ? ");
+		
+		ps.setFloat(1, litros );
+		ps.setFloat(2, precio );
+		ps.setString(3, Matricula );
+		ps.executeUpdate();
+		ps.close();
+	}
+	
 	/**
 	 * Este metodo actualiza el tipo de examen del alumno
 	 * @param dniAlumno dni de el alumno
@@ -251,7 +270,7 @@ public class BBDD {
 	 * 
 	 */
 	public static void borrarAlumnoIndividual(String dniAlumno ) throws SQLException {
-		PreparedStatement ps = connection.prepareStatement("DELETE * FROM ALUMNO WHERE DNIALUMNO = ? ");
+		PreparedStatement ps = connection.prepareStatement("DELETE FROM ALUMNO WHERE DNIALUMNO = ? ");
 		
 		ps.setString(1, dniAlumno );
 		ps.executeUpdate();
@@ -297,6 +316,36 @@ public class BBDD {
 	}
 	
 	/**
+	 * Este método que actualiza el profesor en el coche
+	 * @param dniProfesor del profesor al que se le asigna ese coche
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
+	 */
+	public static void actualizarProfesorCoche(String dniProfesor, String matricula) throws SQLException {
+		PreparedStatement ps = connection.prepareStatement("UPDATE COCHE SET PROFESOR_DNIPROFESOR = ? WHERE MATRICULA = ? ");
+
+		ps.setString(1, dniProfesor);
+		ps.setString(2, matricula);
+		ps.executeUpdate();
+
+		ps.close();
+	}
+	
+	/**
+	 * Este método que actualiza id del arreglo en el coche
+	 * @param id del arreglo de ese coche
+	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
+	 */
+	public static void actualizarArregloCoche(int id, String matricula) throws SQLException {
+		PreparedStatement ps = connection.prepareStatement("UPDATE COCHE SET ARREGLO_IDARREGLO = ? WHERE MATRICULA = ? ");
+
+		ps.setInt(1, id);
+		ps.setString(2, matricula);
+		ps.executeUpdate();
+
+		ps.close();
+	}
+	
+	/**
 	 * Método que se usará en la interfaz para mostrar los datos de los alumnos: guarda los datos.
 	 * @param a Autoescuela
 	 * @return un arrayList de alumnos
@@ -315,9 +364,10 @@ public class BBDD {
 		ps.close();
 		return lista;
 	}
+
 	
 	/**
-	 * Método que se usará en la interfaz para mostrar los datos de los alumnos: guarda los datos.
+	 * Método que se usará en la interfaz para mostrar los datos de los coches: guarda los datos.
 	 * @param a Autoescuela
 	 * @return un arrayList de alumnos
 	 * @throws SQLException Una excepción que proporciona información sobre un error de acceso a la base de datos
@@ -325,7 +375,7 @@ public class BBDD {
 	public static ArrayList<Coches> obtenerCoches(Autoescuela a) throws SQLException{
 		Coches c;
 		ArrayList<Coches> lista = new ArrayList<Coches>();
-		PreparedStatement ps = connection.prepareStatement("SELECT * FROM ALUMNO");
+		PreparedStatement ps = connection.prepareStatement("SELECT * FROM COCHE");
 		ResultSet resul = ps.executeQuery();
 		while(resul.next()) {
 			c = new Coches(resul.getString(1));

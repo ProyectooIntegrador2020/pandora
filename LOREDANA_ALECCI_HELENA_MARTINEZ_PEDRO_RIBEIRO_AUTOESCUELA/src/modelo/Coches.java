@@ -1,7 +1,10 @@
 package modelo;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import DAO.BBDD;
 
 /**
  * Clase que contiene la información sobre cada coche que dispone la autoescuela y sus profesores. También contiene la
@@ -49,13 +52,15 @@ public class Coches {
 	 * Método que le añade los litros de gasolina necesarios al coche cuando éste se quede vacío. También almacena el
 	 * precio de la gasolina usada.
 	 * @param auto Autoescuela donde se va a actualizar el estado del vehiculo.
+	 * @throws SQLException 
 	 */
-	public void repostar(Autoescuela auto) {
+	public void repostar(Autoescuela auto) throws SQLException {
 		//Solo se va a repostar los litros que faltan para llegar a los 60
 		float aRepostar = gasolina_max - litros_gasolina;
 		precio_gasolina += aRepostar*1.33;
 		litros_gasolina = gasolina_max;
 		actualizarVehiculoEnAutoescuela(auto);
+		BBDD.actualizarPrecioGasol(this.matricula, litros_gasolina, precio_gasolina);
 	}
 	
 	/**
