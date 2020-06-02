@@ -40,6 +40,7 @@ public class Main {
 		try {
 			
 			BBDD.conectar();
+			BBDD.deleteEverything();
 			
 			/*Recepcionista.alta(coche1, nochoques);
 			Recepcionista.alta(coche2, nochoques);

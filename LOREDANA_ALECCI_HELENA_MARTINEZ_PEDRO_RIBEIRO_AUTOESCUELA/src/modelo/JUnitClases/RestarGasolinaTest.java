@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import DAO.BBDD;
 import modelo.Autoescuela;
 import modelo.Coches;
 import modelo.Profesor;
@@ -31,7 +33,9 @@ public class RestarGasolinaTest {
 	private static int numClases;
 	private static float result;
 	
-	public RestarGasolinaTest(int num, float res) throws SQLException {
+	public RestarGasolinaTest(int num, float res) throws SQLException, ClassNotFoundException {
+		BBDD.conectar();
+		BBDD.deleteEverything();
 		this.numClases = num;
 		this.result = res;
 		this.auto = new Autoescuela();
@@ -39,6 +43,11 @@ public class RestarGasolinaTest {
 		this.pr1 = new Profesor("12345678T", 45, "Javier", 633987654, c1);
 		Recepcionista.alta(c1, auto);
 		Recepcionista.alta(pr1, auto);
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		BBDD.cerrar();
 	}
 	
 	@Parameters

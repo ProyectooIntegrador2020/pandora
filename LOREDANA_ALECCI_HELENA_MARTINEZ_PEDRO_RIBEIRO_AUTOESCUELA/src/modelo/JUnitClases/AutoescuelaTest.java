@@ -4,9 +4,11 @@ import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import DAO.BBDD;
 import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Coches;
@@ -26,6 +28,9 @@ public class AutoescuelaTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		
+		BBDD.conectar();
+		BBDD.deleteEverything();
 		
 		nochoques = new Autoescuela();
 		Alumnos a1 = new Alumnos("11111111G", 21, "Helena", 644321387, tipoMatricula.completo);
@@ -62,6 +67,11 @@ public class AutoescuelaTest {
 		Recepcionista.alta(pr2, nochoques);
 		Recepcionista.alta(pr3, nochoques);
 		
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		BBDD.cerrar();
 	}
 
 	@Test

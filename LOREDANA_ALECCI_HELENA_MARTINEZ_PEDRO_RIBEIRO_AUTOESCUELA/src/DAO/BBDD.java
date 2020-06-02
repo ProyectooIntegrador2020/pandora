@@ -390,4 +390,17 @@ public class BBDD {
 		ps.close();
 		return lista;
 	}
+	
+	public static void deleteEverything() throws SQLException {
+		PreparedStatement ps = connection.prepareStatement("DELETE FROM ALUMNO");
+		ps.executeUpdate();
+		ps = connection.prepareStatement("DELETE FROM COCHE");
+		ps.executeUpdate();
+		ps = connection.prepareStatement("DELETE FROM ARREGLO");
+		ps.executeUpdate();
+		ps = connection.prepareStatement("DELETE FROM PROFESOR");
+		ps.executeUpdate();
+		
+		ps.close();
+	}
 }

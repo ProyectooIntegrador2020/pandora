@@ -7,9 +7,11 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import DAO.BBDD;
 import modelo.Alumnos;
 import modelo.Autoescuela;
 import modelo.Coches;
@@ -41,6 +43,10 @@ public class RecepcionistaTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		
+		BBDD.conectar();
+		BBDD.deleteEverything();
+		
 		//Creo una autoescuela para realizar pruebas.
 		nochoques = new Autoescuela();
 		//Una autoescuela nula para generar excepciones.
@@ -88,8 +94,11 @@ public class RecepcionistaTest {
 		
 		//Creo un gasto para probar el pago_arreglos.
 		pr1.getCoche().repostar(nochoques);
-		
-		
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		BBDD.cerrar();
 	}
 	
 	@Test
@@ -103,7 +112,7 @@ public class RecepcionistaTest {
 			Recepcionista.alumnosBase(nulo);
 		} catch (IOException ioe) {
 			ioe.getStackTrace();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.getStackTrace();
 		}
 	}
